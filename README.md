@@ -1,3 +1,19 @@
+# Overview
+
+CloudSeed was built to provide a solid project base for your application. As such, it's best to download a clean copy and start working from there.
+
+CloudSeed is split into three primary services:
+
+* App - The Core App logic, API, and where DB integration happens
+    * Built with .NET Core
+    * App.Tests - Tests for App
+* Web - A thin Web app - built to be heavily modified / replaced.
+    * Built with NextJS
+* DB - A local, dockerized DB you can spin up to simulate real-world deployment + integration use cases.
+    * Postgres
+
+The App is the core and the rest serve as useful but optional additions.
+
 # Getting Started
 
 1. Clone the repo
