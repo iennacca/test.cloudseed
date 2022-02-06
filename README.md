@@ -14,7 +14,14 @@ CloudSeed is split into three primary services:
 
 The App is the core and the rest serve as useful but optional additions.
 
-We will be adding additional documentation on the site at https://cloudseed.xyz
+## Getting Support
+
+We will continually be adding and updating documentation on the site at https://cloudseed.xyz
+
+If you're still stuck / have questions / see a problem:
+
+* Create an Issue on the GitHub
+* Contact me at hamy+cloudseed@hamy.xyz
 
 # Getting Started
 
