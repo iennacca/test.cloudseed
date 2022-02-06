@@ -2,8 +2,6 @@ import React, { ReactNode } from 'react'
 import Head from 'next/head'
 
 import Navigation, { NavigationLink } from './Navigation';
-import { getDeployEnvironment } from '../../services/Configuration';
-import { DeployEnvironments } from '../../services/environment/DeployEnvironments';
 import { useSession } from '../../services/Authentication'
 
 type Props = {
@@ -12,17 +10,11 @@ type Props = {
 }
 
 const Layout = ({ children, title = 'CloudSeed' }: Props) => {
-  const deployEnvironment = getDeployEnvironment()
   const sessionResponse = useSession()
 
   const getAllNavigationLinks = (
-    userId: string | null,
-    deployEnvironment: DeployEnvironments
+    userId: string | null
   ): NavigationLink[] => {
-    if(deployEnvironment !== DeployEnvironments.Development) {
-      return []
-    }
-
     let navigationLinks: NavigationLink[] = [
       {
         name: 'Pricing',
@@ -66,8 +58,7 @@ const Layout = ({ children, title = 'CloudSeed' }: Props) => {
           }
           navigationLinks={ 
             getAllNavigationLinks(
-              sessionResponse.session?.userId ?? null,
-              deployEnvironment
+              sessionResponse.session?.userId ?? null
             )
           } />
       </header>
