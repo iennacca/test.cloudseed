@@ -79,15 +79,6 @@ namespace CloudSeedApp {
             string stripeInvoiceId,
             List<OrderProductItem> products
         ) {
-            /*
-                * hamy
-                * create order
-                    * needs products
-                * create invoice on order
-                * handle subscription creation for items in order
-                * need some level of deduping
-            */
-
             var userMaybe = await this._userDataProvider
                 .TryGetUserByStripeCustomerIdAsync(stripeCustomerId);
             if(userMaybe is null) {

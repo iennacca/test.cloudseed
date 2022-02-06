@@ -103,8 +103,6 @@ namespace CloudSeedApp
         public async Task<IActionResult> StripeWebhook()
         {
             // All stripe event types - https://stripe.com/docs/api/events/types
-            this._logger
-                .LogInformation("hamy - stripe webhook");
 
             var json = await new StreamReader(HttpContext.Request.Body).ReadToEndAsync();
             var endpointSecret = this._configurationProvider.STRIPE_WEBHOOK_SECRET;

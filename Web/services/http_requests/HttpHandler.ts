@@ -65,13 +65,13 @@ export async function HandleHttpJsonResponseAsync<T>(httpResponsePromise: Promis
     if(!response.ok) {
         let rawBody = await response.text()
 
-        console.log('hamy - response')
-        console.log(rawBody)
-
         let body = null
         try {
             body = JSON.parse(rawBody)
         } catch (_) {
+            console.log('Failed to parse the error message')
+            console.log(rawBody)
+
             body = {
                 title: "Could not parse error response",
                 status: 0
