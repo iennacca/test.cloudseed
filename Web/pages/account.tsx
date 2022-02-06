@@ -106,7 +106,7 @@ const AccountPage = () => {
                   GitHub Username
                 </label>
                 <p className="sm:col-span-4 mt-1 text-sm text-gray-500 mb-2">
-                  You will get access to the CloudSeed git repo via GitHub.
+                  This is an example of how to save things e2e to your data model.
                 </p>
                 <div className="mt-1 flex rounded-md">
                   <input
