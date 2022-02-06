@@ -1,0 +1,5 @@
+bin/
+obj/
+out/
+secrets.md
+linetimes-server.yaml

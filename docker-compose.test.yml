@@ -1,0 +1,34 @@
+version: "3"
+services:
+  cloudseed_app_tests:
+    build: 
+      context: ./
+      dockerfile: ./test.Dockerfile
+    container_name: cloudseed_app_tests
+    # volumes:
+    #   - .:/source
+    #   - /etc/passwd:/etc/passwd:ro
+    environment:
+      ACCESS_TOKEN_COOKIE_NAME: CLOUDSEED_ACCESS_TOKEN
+      DATABASE_HOST: cloudseed_db_test
+      DATABASE_NAME: cloudseed
+      DATABASE_PASSWORD: development_password
+      DATABASE_USER: cloudseed_tests
+      EMAIL_FROM_ADDRESS: iamanemail
+      JWT_SIGNING_KEY: "iamafakekey"
+      POSTMARK_API_KEY: IAMAKEY
+      STRIPE_API_KEY: IAMAKEY
+      STRIPE_WEBHOOK_SECRET: iamakey
+      WEB_BASE_URL: http://localhost:5000
+      ASPNETCORE_ENVIRONMENT: development
+    depends_on:
+      - cloudseed_db_test
+    # command: "dotnet test --logger:trx"
+  cloudseed_db_test:
+    build: ./DevelopmentDatabase
+    restart: always
+    ports:
+      - 5004:5432
+    environment:
+      POSTGRES_PASSWORD: development_password
+      POSTGRES_USER: cloudseed_tests
