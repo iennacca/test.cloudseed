@@ -49,30 +49,17 @@ const coreFeatures: Feature[] = [
 ]
 
 // Note: These products need to be kept in sync with 
-// App's products
+// App's products for Stripe integration
 const productionSubscriptions: Subscription[] = [
   {
-    id: 'myfakeid',
-    name: 'Single Application',
-    description: 'Build one app with CloudSeed',
+    id: 'REAL_SUBSCRIPTION_ONE',
+    name: 'Real Product',
+    description: 'A product sold with CloudSeed!',
     priceYearly: 50,
     features: [
       ...coreFeatures,
       {
-        name: 'Build one app',
-        included: false
-      }
-    ]
-  },
-  {
-    id: 'myfakeid',
-    name: 'Unlimited Applications',
-    description: 'Build unlimited apps with CloudSeed',
-    priceYearly: 150,
-    features: [
-      ...coreFeatures,
-      {
-        name: 'Build unlimited apps',
+        name: 'A real product',
         included: true
       }
     ]
@@ -83,13 +70,13 @@ const testSubscriptions: Subscription[] = [
   {
     id: 'TEST_SUBSCRIPTION_ONE',
     name: 'Test Product',
-    description: 'Build unlimited apps with CloudSeed',
+    description: 'A test product sold with CloudSeed!',
     priceYearly: 50,
     features: [
       ...coreFeatures,
       {
-        name: 'Build unlimited apps',
-        included: true
+        name: 'A fake product',
+        included: false
       }
     ]
   }
@@ -157,7 +144,7 @@ const PricingPage = () => {
             href=''
             onClick={(e) => onClickHandler(e, session, productId)}
           >
-            Get started
+            Buy Now
           </a>
       </div>
     )
@@ -175,9 +162,9 @@ const PricingPage = () => {
       <div className="py-12 bg-white" id="tech_stack">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="sm:flex sm:flex-col sm:align-center mb-6">
-            <h1 className="text-5xl font-extrabold text-gray-900 sm:text-center">Pricing Plans</h1>
-            <p className="mt-5 text-xl text-gray-500 sm:text-center">
-              Simple pricing so you can launch today.
+            <h1 className="text-5xl font-extrabold text-gray-900 sm:text-center">Pricing</h1>
+            <p className="mt-5 text-xl  sm:text-center">
+              Sell your stuff here!
             </p>
           </div>
           <div className="relative">
@@ -197,9 +184,9 @@ const PricingPage = () => {
                       </div>
                       <div className="mt-4 flex items-baseline text-6xl font-extrabold">
                         ${subscription.priceYearly}
-                        <span className="ml-1 text-2xl font-medium text-gray-500">/year</span>
+                        <span className="ml-1 text-2xl font-medium ">/year</span>
                       </div>
-                      <p className="mt-5 text-lg text-gray-500">{subscription.description}</p>
+                      <p className="mt-5 text-lg ">{subscription.description}</p>
                     </div>
                     <div className="flex-1 flex flex-col justify-between px-6 pt-6 pb-8 space-y-6 sm:p-10 sm:pt-6">
                       <ul role="list" className="space-y-4">

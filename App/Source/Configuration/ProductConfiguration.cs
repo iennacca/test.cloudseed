@@ -6,34 +6,26 @@ using CloudSeedApp;
 namespace CloudSeedApp {
 
     public static class ProductConfiguration {
+        /*
+            * CHANGEME: Configure your products here
+        */
 
         public static class ProductIDs {
-            public const string SingleProjectOneYear = "SINGLE_PROJECT_ONE_YEAR";
-            public const string UnlimitedProjectOneYear = "UNLIMITED_PROJECT_ONE_YEAR";
+            public const string TestSubscriptionOne = "REAL_SUBSCRIPTION_ONE";
         }
 
         public static List<Product> GetProductionProducts() {
             return new List<Product> {
                 new Product(
-                    ProductIDs.SingleProjectOneYear,
+                    ProductIDs.TestSubscriptionOne,
                     Product.ProductType.Subscription,
                     new Product.ProductData {
-                        StripeProductID = "price_1K4I2iCDoQLx7JZGaL0rYLUB"
+                        StripeProductID = "CHANGEME_stripeProductId"
                     },
                     new Product.SubscriptionProductData {
                         SubscriptionPeriod = Product.SubscriptionPeriods.Year
                     }
                 ),
-                new Product(
-                    ProductIDs.UnlimitedProjectOneYear,
-                    Product.ProductType.Subscription,
-                    new Product.ProductData {
-                        StripeProductID = "price_1K4I3XCDoQLx7JZGBlCZp5kt"
-                    },
-                    new Product.SubscriptionProductData {
-                        SubscriptionPeriod = Product.SubscriptionPeriods.Year
-                    }
-                )
             };
         }
 
@@ -47,7 +39,7 @@ namespace CloudSeedApp {
                     TestProductIDs.TestSubscriptionOne,
                     Product.ProductType.Subscription,
                     new Product.ProductData {
-                        StripeProductID = "price_1K9FwwCDoQLx7JZGhHDvnagk"
+                        StripeProductID = "CHANGEME_stripeTestProductId"
                     },
                     new Product.SubscriptionProductData {
                         SubscriptionPeriod = Product.SubscriptionPeriods.Year
