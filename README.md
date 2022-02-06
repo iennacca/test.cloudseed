@@ -14,6 +14,8 @@ CloudSeed is split into three primary services:
 
 The App is the core and the rest serve as useful but optional additions.
 
+We will be adding additional documentation on the site at https://cloudseed.xyz
+
 # Getting Started
 
 1. Clone the repo
