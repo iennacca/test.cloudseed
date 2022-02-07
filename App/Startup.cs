@@ -152,6 +152,14 @@ namespace CloudSeedApp
                 this.WebHostEnvironment
             );
 
+            /*
+                * HAM: .NET is very particular about the middleware creation order (https://docs.microsoft.com/en-us/aspnet/core/fundamentals/middleware/?view=aspnetcore-6.0#middleware-order)
+                    * UseExceptionHandler
+                    * UseRouting
+                    * UseCors
+                    * UseEndpoint
+            */
+
             if (env.IsDevelopment())
             {
                 app.UseExceptionHandler("/error-development");
