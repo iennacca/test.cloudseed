@@ -1,22 +1,19 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using System;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 namespace CloudSeedApp
 {
     [ApiController]
     public class ErrorController : ControllerBase
     {
-        public ErrorController(
-        ) {
-        }
+        public ErrorController() { }
 
         // Modeled from https://docs.microsoft.com/en-us/aspnet/core/web-api/handle-errors?view=aspnetcore-6.0#exception-handler
         [Route("/error-development")]
+        [AllowAnonymous]
         public IActionResult HandleErrorDevelopment(
             [FromServices] IHostEnvironment hostEnvironment
         ) {
@@ -33,6 +30,7 @@ namespace CloudSeedApp
         }
 
         [Route("/error")]
+        [AllowAnonymous]
         private IActionResult HandleError() {
             var exceptionHandlerFeature = HttpContext.Features.Get<IExceptionHandlerFeature>();
 
