@@ -147,6 +147,11 @@ namespace CloudSeedApp
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            var configurationProvider = new ConfigurationProvider(
+                this.Configuration,
+                this.WebHostEnvironment
+            );
+
             if (env.IsDevelopment())
             {
                 app.UseExceptionHandler("/error-development");
@@ -172,6 +177,18 @@ namespace CloudSeedApp
                 );
             } else {
                 app.UseExceptionHandler("/error");
+
+                app.UseCors(
+                    builder => {
+                        builder.WithOrigins(
+                            // CHANGEME - add your production domains here
+                            configurationProvider.WEB_BASE_URL
+                        ).SetIsOriginAllowedToAllowWildcardSubdomains()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .AllowCredentials();
+                    }
+                );
             }
 
             app.UseRouting();
