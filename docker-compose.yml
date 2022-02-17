@@ -1,28 +1,26 @@
 version: "3"
 services:
-  cloudseed_app_container:
+  cloudseed_app_env:
     build: ./App
     container_name: cloudseed_app
     depends_on:
-      - cloudseed_db_local
+      - cloudseed_development_database
     ports:
       - 5001:8080
     environment:
       ACCESS_TOKEN_COOKIE_NAME: CLOUDSEED_ACCESS_TOKEN
-      ASPNETCORE_ENVIRONMENT: Development
-      # The DB settings should be set here so they can reference local db values
-      DATABASE_HOST: cloudseed_db_local
+      DATABASE_HOST: cloudseed_development_database
       DATABASE_NAME: cloudseed
       DATABASE_PASSWORD: development_password
       DATABASE_USER: cloudseed_database_user
-      DOMAIN: localhost:5001
-      EMAIL_FROM_ADDRESS: CHANGEME_emailAddress
-      JWT_SIGNING_KEY: "CHANGEMEiamafakekeyButNeedToBeReallyReallyLongAtLeast32Bits"
-      POSTMARK_API_KEY: CHANGEME_postmarkapikey
-      STRIPE_API_KEY: CHANGME_stripeapikey
-      STRIPE_WEBHOOK_SECRET: CHANGEME_webhooksecret
-      WEB_BASE_URL: http://host.docker.internal:5000
-  cloudseed_db_local:
+      EMAIL_FROM_ADDRESS: iamanemail
+      JWT_SIGNING_KEY: "CHANGEMEiamasuperlongkeytosatisfythevlongrequirementsforthis123"
+      POSTMARK_API_KEY: IAMAKEY
+      STRIPE_API_KEY: IAMAKEY
+      STRIPE_WEBHOOK_SECRET: iamakey
+      WEB_BASE_URL: http://localhost:5000
+      ASPNETCORE_ENVIRONMENT: development
+  cloudseed_development_database:
     build: ./DevelopmentDatabase
     restart: always
     ports:
@@ -32,18 +30,16 @@ services:
       POSTGRES_USER: cloudseed_database_user
   cloudseed_web:
     build: 
-      context: ./Web
+      context: ./Web2
       dockerfile: ./dev.Dockerfile
     container_name: cloudseed_web
     ports:
       - 5000:8080
+      - 24678:24678
     environment:
-      # The Web and App ACCESS_TOKEN_COOKIE_NAME must be the same
-      ACCESS_TOKEN_COOKIE_NAME: CLOUDSEED_ACCESS_TOKEN
-      APP_BASE_URL: http://host.docker.internal:5001
-      WEB_BASE_URL: http://host.docker.internal:5000
-      GOOGLE_ANALYTICS_ID: CHANGEME_googleanalyticsid
+      # env vars set via dotfiles
+      UNUSED_VARIABLE: UNUSED
     volumes:
-      - ./Web:/usr/src/app
+      - ./Web2:/usr/src/app
       - /usr/src/app/node_modules
       - /usr/src/app/.next

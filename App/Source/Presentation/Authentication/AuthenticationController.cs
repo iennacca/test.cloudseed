@@ -77,7 +77,7 @@ namespace CloudSeedApp
                     JwtAuthenticationPurposes.INITIAL_LOGIN);
 
                 var baseUrl = this._configurationProvider
-                    .WEB_BASE_URL + "/login/validate";
+                    .WEB_BASE_URL + "/api/authentication/session/create";
                 var queryParams = new Dictionary<string, string>() {
                     { "token", token }
                 };
