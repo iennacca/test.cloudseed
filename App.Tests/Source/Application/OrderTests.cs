@@ -21,7 +21,6 @@ namespace AppTests
         public async Task TestBasicOrderCreation() {
             var user = await TestDataPopulationUtilities.CreateUserAsync(this.DbContext);
             await this.DbContext.SaveChangesAsync();
-            // var checkout = await this.CreateCheckoutAsync();
             var nowProvider = new UtcNowProvider();
 
             Assert.NotNull(user.Id);
@@ -41,22 +40,6 @@ namespace AppTests
 
             Assert.Equal(savedOrder.UserId, user.Id);
         }
-
-        // private async Task<User> CreateUserAsync() {
-        //     var user = TestDataPopulationUtilities.CreateUserAsync(this.DbContext);
-
-        //     var email = Guid.NewGuid().ToString();
-        //     var user = new User(
-        //         email,
-        //         new User.UserData {
-        //         }
-        //     );
-        //     this.DbContext
-        //         .Users 
-        //         .Add(user);
-        //     await this.DbContext.SaveChangesAsync();
-        //     return user;
-        // }
 
         private async Task<Checkout> CreateCheckoutAsync() {
             var nowProvider = new UtcNowProvider();
