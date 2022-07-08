@@ -58,9 +58,9 @@ namespace CloudSeedApp
                     now,
                     new Subscription.SubscriptionData()
                 );
-                this._dbContext
+                await this._dbContext
                     .Subscriptions
-                    .Add(subscription);
+                    .AddAsync(subscription);
             }
 
             var latestExpiration = subscription is null

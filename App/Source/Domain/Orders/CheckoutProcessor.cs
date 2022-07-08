@@ -35,9 +35,9 @@ namespace CloudSeedApp {
                 creationTime.Add(effectiveExpirationDuration),
                 checkoutData
             );
-            this._dbContext
+            await this._dbContext
                 .Checkouts
-                .Add(newCheckout);
+                .AddAsync(newCheckout);
             await this._dbContext.SaveChangesAsync();
 
             return newCheckout;

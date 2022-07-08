@@ -30,9 +30,9 @@ namespace AppTests
                 twoDaysFromNowDateTimeOffset,
                 null
             );
-            this.DbContext
+            await this.DbContext
                 .Checkouts 
-                .Add(checkout);
+                .AddAsync(checkout);
             await this.DbContext.SaveChangesAsync();
 
             var savedCheckout = await this.DbContext
@@ -58,9 +58,9 @@ namespace AppTests
                     StripeCheckoutID = guid.ToString()
                 }
             );
-            this.DbContext
+            await this.DbContext
                 .Checkouts 
-                .Add(checkout);
+                .AddAsync(checkout);
             await this.DbContext.SaveChangesAsync();
 
             var newGuid = Guid.NewGuid();
@@ -93,9 +93,9 @@ namespace AppTests
                 twoDaysFromNowDateTimeOffset,
                 checkoutData
             );
-            this.DbContext
+            await this.DbContext
                 .Checkouts 
-                .Add(checkout);
+                .AddAsync(checkout);
             await this.DbContext.SaveChangesAsync();
 
             var savedCheckout = await this.DbContext
@@ -121,9 +121,9 @@ namespace AppTests
                 twoDaysFromNowDateTimeOffset,
                 checkoutData
             );
-            this.DbContext
+            await this.DbContext
                 .Checkouts 
-                .Add(checkout);
+                .AddAsync(checkout);
             await this.DbContext.SaveChangesAsync();
 
             var savedCheckout = await this.DbContext

@@ -111,9 +111,9 @@ namespace CloudSeedApp {
                     StripeInvoiceId = stripeInvoiceId
                 }
             );
-            this._dbContext
+            await this._dbContext
                 .Orders
-                .Add(order);
+                .AddAsync(order);
             await this._dbContext
                 .SaveChangesAsync();
 

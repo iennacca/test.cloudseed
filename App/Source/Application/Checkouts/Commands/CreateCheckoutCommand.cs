@@ -37,9 +37,9 @@ namespace CloudSeedApp {
                     Products = request.Products
                 }
             );
-            this._context
+            await this._context
                 .Checkouts
-                .Add(checkout);
+                .AddAsync(checkout);
             await this._context.SaveChangesAsync();
             
             return checkout;

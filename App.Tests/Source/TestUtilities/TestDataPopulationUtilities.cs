@@ -20,9 +20,9 @@ public static class TestDataPopulationUtilities
             email,
             new User.UserData()
         );
-        dbContext
+        await dbContext
             .Users
-            .Add(user);
+            .AddAsync(user);
         await dbContext.SaveChangesAsync();
         return user;
     }
@@ -42,9 +42,9 @@ public static class TestDataPopulationUtilities
                 StripeCheckoutID = Guid.NewGuid().ToString()
             }
         );
-        dbContext
+        await dbContext
             .Checkouts
-            .Add(checkout);
+            .AddAsync(checkout);
         await dbContext.SaveChangesAsync();
 
         return checkout;
@@ -69,9 +69,9 @@ public static class TestDataPopulationUtilities
             dateTimeOffset,
             new Order.OrderData()
         );
-        dbContext
+        await dbContext
             .Orders
-            .Add(order);
+            .AddAsync(order);
         await dbContext.SaveChangesAsync();
         return order;
     }
@@ -105,9 +105,9 @@ public static class TestDataPopulationUtilities
             expirationTimestamp ?? nowProvider.GetNowDateTimeOffset(),
             new Subscription.SubscriptionData()
         );
-        dbContext
+        await dbContext
             .Subscriptions
-            .Add(subscription);
+            .AddAsync(subscription);
         await dbContext.SaveChangesAsync();
         return subscription;
     }

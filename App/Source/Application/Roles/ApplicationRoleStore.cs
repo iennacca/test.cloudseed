@@ -30,9 +30,9 @@ namespace CloudSeedApp {
         public async Task<IdentityResult> CreateAsync(ApplicationRole role, CancellationToken cancellationToken = default(CancellationToken)) {
             cancellationToken.ThrowIfCancellationRequested();
 
-            this._dbContext
+            await this._dbContext
                 .Roles
-                .Add(role);
+                .AddAsync(role);
             await this._dbContext.SaveChangesAsync();
             return IdentityResult.Success;
         }

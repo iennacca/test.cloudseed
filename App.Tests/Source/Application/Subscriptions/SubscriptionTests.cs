@@ -30,9 +30,9 @@ namespace AppTests
                 nowProvider.GetNowDateTimeOffset().AddDays(1),
                 new Subscription.SubscriptionData()
             );
-            this.DbContext
+            await this.DbContext
                 .Subscriptions
-                .Add(subscription);
+                .AddAsync(subscription);
             await this.DbContext.SaveChangesAsync();
 
             var savedSubscription = await this.DbContext

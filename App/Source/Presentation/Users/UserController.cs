@@ -57,9 +57,9 @@ namespace CloudSeedApp
                 registerUserPayload.EmailAddress,
                 new User.UserData {}
             );
-            this._dbContext
+            await this._dbContext
                 .Users
-                .Add(newUser);
+                .AddAsync(newUser);
             await this._dbContext.SaveChangesAsync();
 
             return Ok();

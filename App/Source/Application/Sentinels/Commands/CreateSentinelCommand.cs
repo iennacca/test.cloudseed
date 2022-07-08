@@ -28,9 +28,9 @@ namespace CloudSeedApp {
                 .DomainEvents
                 .Add(new SentinelCreatedEvent(newSentinel));
 
-            this._context
+            await this._context
                 .Sentinels
-                .Add(newSentinel);
+                .AddAsync(newSentinel);
             await this._context.SaveChangesAsync();
 
             return newSentinel;

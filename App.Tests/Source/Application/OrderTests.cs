@@ -30,9 +30,9 @@ namespace AppTests
                 nowProvider.GetNowDateTimeOffset(),
                 new Order.OrderData()
             );
-            this.DbContext 
+            await this.DbContext 
                 .Orders 
-                .Add(order);
+                .AddAsync(order);
             await this.DbContext.SaveChangesAsync();
 
             var savedOrder = await this.DbContext
@@ -68,9 +68,9 @@ namespace AppTests
                 twoDaysFromNowDateTimeOffset,
                 null
             );
-            this.DbContext
+            await this.DbContext
                 .Checkouts 
-                .Add(checkout);
+                .AddAsync(checkout);
             await this.DbContext.SaveChangesAsync();
 
             return checkout;

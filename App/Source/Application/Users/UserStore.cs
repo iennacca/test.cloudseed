@@ -30,9 +30,9 @@ namespace CloudSeedApp {
         public async Task<IdentityResult> CreateAsync(User user, CancellationToken cancellationToken) {
             cancellationToken.ThrowIfCancellationRequested();
 
-            this._dbContext
+            await this._dbContext
                 .Users 
-                .Add(user);
+                .AddAsync(user);
             await this._dbContext.SaveChangesAsync();
 
             return IdentityResult.Success;

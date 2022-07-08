@@ -22,9 +22,9 @@ namespace AppTests
             var guid = Guid.NewGuid();
             var email = $"{guid.ToString()}@cloudseed.xyz";
             var user = new User(email, null);
-            this.DbContext
+            await this.DbContext
                 .Users
-                .Add(user);
+                .AddAsync(user);
             await this.DbContext.SaveChangesAsync();
             
             var savedUser = await this.DbContext
@@ -44,9 +44,9 @@ namespace AppTests
                     GitHubUsername = Guid.NewGuid().ToString()
                 };
             var user = new User(email, userData);
-            this.DbContext
+            await this.DbContext
                 .Users
-                .Add(user);
+                .AddAsync(user);
             await this.DbContext.SaveChangesAsync();
             
             var savedUser = await this.DbContext
