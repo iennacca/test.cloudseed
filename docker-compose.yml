@@ -1,12 +1,12 @@
 version: "3"
 services:
   cloudseed_app_env:
-    build: ./App
+    build: ./App2
     container_name: cloudseed_app
     depends_on:
       - cloudseed_development_database
     ports:
-      - 5001:8080
+      - 5001:80
     environment:
       ACCESS_TOKEN_COOKIE_NAME: CLOUDSEED_ACCESS_TOKEN
       DATABASE_HOST: cloudseed_development_database
