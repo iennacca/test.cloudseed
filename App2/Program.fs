@@ -1,15 +1,16 @@
+
 open System
+open Microsoft
 open Microsoft.AspNetCore.Builder
 open Microsoft.AspNetCore.Cors
 open Microsoft.AspNetCore.Hosting
 open Microsoft.Extensions.Hosting
 open Microsoft.Extensions.DependencyInjection
 open Giraffe
+open CloudSeedApp.Routes
 
-let webApp =
-    choose [
-        route "/ping"   >=> text "pong"
-        route "/"       >=> htmlFile "/pages/index.html" ]
+let webApp: HttpFunc -> AspNetCore.Http.HttpContext -> HttpFuncResult =
+    routes
 
 let configureApp (app : IApplicationBuilder) =
     app.UseCors(
