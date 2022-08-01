@@ -9,15 +9,7 @@ open System.Threading.Tasks
 
 module GetSentinelQuery =
 
-    type GetSentinelQueryErrors =
-        | NoEventReceived
-        | NoSentinelFound
-
-    type GetSentinelQuery = {
-        id: string
-    }
-
-    let sendGetSentinelQueryAsync (event : GetSentinelQuery) : Task<Result<Sentinel, GetSentinelQueryErrors>> = 
+    let sendGetSentinelQueryAsync (event : SentinelEvents.GetSentinelQuery) : Task<Result<Sentinel, SentinelEvents.GetSentinelQueryErrors>> = 
         (Ok ({ id = "iamanid" }: Sentinel))
         |> Task.FromResult
 

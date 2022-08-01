@@ -6,12 +6,11 @@ open Configuration
 open Events
 open GetSentinelQuery
 open Giraffe
-open SentinelEvent
 
 module Routes =
 
     type AppEvent =
-        | SentinelEvent of SentinelEvent
+        | SentinelEvent of SentinelEvents.SentinelEvent
         | FakeEvent of int
 
     let routes (configuration : AppConfiguration) : HttpFunc -> AspNetCore.Http.HttpContext -> HttpFuncResult =
