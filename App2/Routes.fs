@@ -2,6 +2,7 @@ namespace CloudSeedApp
 
 open Microsoft
 
+open Configuration
 open Events
 open GetSentinelQuery
 open Giraffe
@@ -13,7 +14,7 @@ module Routes =
         | SentinelEvent of SentinelEvent
         | FakeEvent of int
 
-    let routes : HttpFunc -> AspNetCore.Http.HttpContext -> HttpFuncResult =
+    let routes (configuration : AppConfiguration) : HttpFunc -> AspNetCore.Http.HttpContext -> HttpFuncResult =
         
 
         choose [

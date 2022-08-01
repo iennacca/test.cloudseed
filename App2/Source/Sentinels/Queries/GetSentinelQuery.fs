@@ -3,7 +3,6 @@ namespace CloudSeedApp
 open Microsoft.AspNetCore.Http
 open Events
 open Giraffe
-// open Sentinels.Domain.Sentinel
 open Sentinel
 open System.Threading.Tasks
 

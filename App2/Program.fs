@@ -1,17 +1,22 @@
 // namespace CloudSeedApp
 
 open System
+open System.IO
 open Microsoft
 open Microsoft.AspNetCore.Builder
 open Microsoft.AspNetCore.Cors
 open Microsoft.AspNetCore.Hosting
+open Microsoft.Extensions.Configuration
 open Microsoft.Extensions.Hosting
 open Microsoft.Extensions.DependencyInjection
+
 open Giraffe
+open CloudSeedApp.Configuration
+open CloudSeedApp.Persistence
 open CloudSeedApp.Routes
 
-let webApp: HttpFunc -> AspNetCore.Http.HttpContext -> HttpFuncResult =
-    routes 
+let webApp (configuration : AppConfiguration) : HttpFunc -> AspNetCore.Http.HttpContext -> HttpFuncResult =
+    routes configuration 
 
 let configureApp (app : IApplicationBuilder) =
     app.UseCors(
@@ -24,8 +29,20 @@ let configureApp (app : IApplicationBuilder) =
     )
     |> ignore
 
+    let configuration = fetchConfiguration
+    let connectionString = (getDatabaseConnectionString 
+        configuration.DATABASE_HOST
+        configuration.DATABASE_NAME
+        configuration.DATABASE_USER
+        configuration.DATABASE_PASSWORD)
+
+    printfn "ConnectionString: %A: " connectionString
+
+    upgradeDatabase connectionString
+        |> ignore
+
     // Add Giraffe to the ASP.NET Core pipeline
-    app.UseGiraffe webApp
+    app.UseGiraffe (webApp configuration)
 
 let configureServices (services : IServiceCollection) =
     services.AddCors() |> ignore
