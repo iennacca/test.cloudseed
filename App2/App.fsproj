@@ -5,6 +5,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <!-- Infrastructure -->
+    <Compile Include="Source/Infrastructure/Events.fs" />
+    <!-- Domains -->
+    <!-- Domain: Sentinels -->
+    <Compile Include="Source/Sentinels/Domain/Sentinel.fs" />
+    <Compile Include="Source/Sentinels/Queries/GetSentinelQuery.fs" />
+    <Compile Include="Source/Sentinels/SentinelEvent.fs" />
+    <!-- Startup -->
     <Compile Include="Routes.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
