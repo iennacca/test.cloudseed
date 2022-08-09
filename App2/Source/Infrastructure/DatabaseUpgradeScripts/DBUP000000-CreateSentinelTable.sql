@@ -1,4 +1,4 @@
 CREATE TABLE sentinels(
-    id SERIAL PRIMARY KEY,
-    Name varchar(255)
+    id VARCHAR PRIMARY KEY,
+    data JSONB
 );

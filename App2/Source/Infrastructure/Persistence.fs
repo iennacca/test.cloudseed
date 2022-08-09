@@ -1,5 +1,6 @@
 namespace CloudSeedApp 
 
+open System.Data.Common
 open System.Reflection
 open System.Threading
 
@@ -19,6 +20,9 @@ module Persistence =
 
         builder.ToString()
 
+    let getDatabaseConnection connectionString : DbConnection = 
+        new NpgsqlConnection(connectionString)
+
     let upgradeDatabase connectionString =
         printfn "DB Connection String: %A" connectionString
         try 
@@ -34,7 +38,7 @@ module Persistence =
                 Assembly.GetExecutingAssembly(),
                 (fun (scriptName : string) -> 
                     // Console.WriteLine($"DBUp scriptName: {scriptName}");
-                    scriptName.Contains("DatabaseUpgradeScripts.DatabaseUpgradeScript")
+                    scriptName.Contains("DatabaseUpgradeScripts.DBUP")
                 ))
             .WithTransactionPerScript()
             .LogToConsole()

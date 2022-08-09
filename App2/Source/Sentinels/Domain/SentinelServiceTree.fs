@@ -1,11 +1,13 @@
 namespace CloudSeedApp
 
+open System.Data.Common
+
 module SentinelServiceTree = 
 
-    type SentinelWorkflows = {
-        GetSentinelQuery: SentinelEvents.GetSentinelQuery -> Sentinel.Sentinel 
+    type SentinelWorkflowIOs = {
+        DbConnection: unit -> DbConnection
     }
 
-    type SentinelWorkflowIOs = {
-        NotAnIO: string -> unit
+    type SentinelServiceTree = {
+        WorkflowIOs : SentinelWorkflowIOs
     }

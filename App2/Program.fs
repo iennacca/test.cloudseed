@@ -10,13 +10,16 @@ open Microsoft.Extensions.Configuration
 open Microsoft.Extensions.Hosting
 open Microsoft.Extensions.DependencyInjection
 
+open Dapper.FSharp
 open Giraffe
+open Npgsql
+
 open CloudSeedApp.Configuration
 open CloudSeedApp.Persistence
 open CloudSeedApp.Routes
 
-let webApp (configuration : AppConfiguration) : HttpFunc -> AspNetCore.Http.HttpContext -> HttpFuncResult =
-    routes configuration 
+let webApp (configuration : AppConfiguration) (connectionString: string) : HttpFunc -> AspNetCore.Http.HttpContext -> HttpFuncResult =
+    routes configuration connectionString
 
 let configureApp (app : IApplicationBuilder) =
     app.UseCors(
@@ -28,6 +31,8 @@ let configureApp (app : IApplicationBuilder) =
                 b.AllowAnyOrigin() |> ignore)
     )
     |> ignore
+
+    Dapper.FSharp.OptionTypes.register()
 
     let configuration = fetchConfiguration
     let connectionString = (getDatabaseConnectionString 
@@ -42,7 +47,7 @@ let configureApp (app : IApplicationBuilder) =
         |> ignore
 
     // Add Giraffe to the ASP.NET Core pipeline
-    app.UseGiraffe (webApp configuration)
+    app.UseGiraffe (webApp configuration connectionString)
 
 let configureServices (services : IServiceCollection) =
     services.AddCors() |> ignore

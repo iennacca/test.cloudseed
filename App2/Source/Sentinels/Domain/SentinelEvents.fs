@@ -10,5 +10,19 @@ module SentinelEvents =
         id: string
     }
 
+    type GetSentinelsQueryErrors =
+        | NoSentinelFound
+
+    type GetSentinelsQuery = {
+        count: int
+    }
+
+    type CreateSentinelCommand = unit 
+
+    type CreateSentinelCommandErrors = 
+        | CouldNotCreateSentinel
+
     type SentinelEvent =
+        | CreateSentinelCommandEvent of CreateSentinelCommand
         | GetSentinelQueryEvent of GetSentinelQuery
+        | GetSentinelsQueryEvent of GetSentinelsQuery

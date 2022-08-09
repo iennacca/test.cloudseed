@@ -1,6 +1,11 @@
 namespace CloudSeedApp
 
-// open Configuration
+open System.Data.Common
+
+open Dapper.FSharp
+
+open Configuration
+open SentinelServiceTree
 
 module ServiceTree = 
 
@@ -10,6 +15,14 @@ module ServiceTree =
     type Workflows = {
         NotAWorkflow: int
     }
-    type WorflowIOs = {
+    type WorkflowIOs = {
+        getDbConnection: unit -> DbConnection
         NotAnIO: int
+    }
+
+    type ServiceTree = {
+        Settings: Settings 
+        SentinelServiceTree: SentinelServiceTree
+        Workflows: Workflows 
+        WorkflowIOs: WorkflowIOs
     }
