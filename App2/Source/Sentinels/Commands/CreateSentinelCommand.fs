@@ -21,6 +21,9 @@ module CreateSentinelCommand =
 
             let newSentinel : Sentinel = {
                 id = Guid.NewGuid().ToString()
+                data = {
+                    name = Guid.NewGuid().ToString()
+                }
             }
 
             let! sentinels = createSentinelIOAsync dbConnection newSentinel           

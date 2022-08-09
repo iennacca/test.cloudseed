@@ -27,6 +27,7 @@
     <PackageReference Include="DbUp" Version="4.6.0" />
     <PackageReference Include="dbup-postgresql" Version="4.6.3" />
     <PackageReference Include="Giraffe" Version="6.0.0" />
+    <PackageReference Include="newtonsoft.json" Version="13.0.1" />
     <PackageReference Include="npgsql" Version="6.0.5" />
   </ItemGroup>
   <ItemGroup>
