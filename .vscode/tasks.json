@@ -2,41 +2,186 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "build",
-            "command": "dotnet",
+            "label": "launch-compose-dotnet-background",
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "compose-down",
+                "compose-build",
+                "compose-up-background"
+            ]
+        },
+        {
+            "label": "launch-compose",
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "compose-down",
+                "compose-build",
+                "compose-up"
+            ]
+        },
+        {
+            "label": "compose-build",
+            "command": "docker-compose",
             "type": "process",
             "args": [
+                "-f",
+                "${workspaceFolder}/docker-compose.yml",
+                "build"
+            ],
+            "netCore": {
+                "appProject": "${workspaceFolder}/App/App.csproj",
+                "enableDebugging": true
+            }
+        },
+        {
+            "label": "compose-up",
+            "command": "docker-compose",
+            "type": "process",
+            "args": [
+                "-f",
+                "${workspaceFolder}/docker-compose.yml",
+                "up"
+            ]
+        },
+        {
+            "label": "compose-up-background",
+            "command": "docker-compose",
+            "type": "process",
+            "args": [
+                "-f",
+                "${workspaceFolder}/docker-compose.yml",
+                "up",
+                "-d"
+            ]
+        },
+        {
+            "label": "compose-down",
+            "command": "docker-compose",
+            "type": "process",
+            "args": [
+                "-f",
+                "${workspaceFolder}/docker-compose.yml",
+                "down",
+                "--remove-orphans"
+            ]
+        },
+        // App.Tests
+        /*
+            Full Command: 
+            * sudo docker-compose -f docker-compose.test.yml down --remove-orphans && sudo docker-compose -f docker-compose.test.yml up hangout_db_test
+            * docker-compose -f docker-compose.test.yml build hangout_app_tests && docker-compose -f docker-compose.test.yml up hangout_app_tests
+        */
+        {
+            "label": "launch-test-compose",
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "compose-down-test",
+                "compose-up-test-db",
+                "compose-build-test",
+                "compose-up-test-background",
+                "test-compose-run-dotnet-test"
+            ],
+            "problemMatcher": [],
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "launch-test-compose-debug",
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "compose-down-test",
+                "compose-up-test-db",
+                "compose-build-test",
+                "compose-up-test-background",
+                // "test-compose-run-dotnet-test"
+            ]
+        },
+        {
+            "label": "compose-up-test-db",
+            "command": "docker-compose",
+            "type": "process",
+            "args": [
+                "-f",
+                "${workspaceFolder}/docker-compose.test.yml",
+                "up",
+                "-d",
+                "hangout_db_test"
+            ]
+        },
+        {
+            "label": "compose-build-test",
+            "command": "docker-compose",
+            "type": "process",
+            "args": [
+                "-f",
+                "${workspaceFolder}/docker-compose.test.yml",
                 "build",
-                "${workspaceFolder}/App/App.csproj",
-                "/property:GenerateFullPaths=true",
-                "/consoleloggerparameters:NoSummary"
-            ],
-            "problemMatcher": "$msCompile"
+                "hangout_app_tests"
+            ]
         },
         {
-            "label": "publish",
-            "command": "dotnet",
+            "label": "compose-up-test",
+            "command": "docker-compose",
             "type": "process",
             "args": [
-                "publish",
-                "${workspaceFolder}/App/App.csproj",
-                "/property:GenerateFullPaths=true",
-                "/consoleloggerparameters:NoSummary"
-            ],
-            "problemMatcher": "$msCompile"
+                "-f",
+                "${workspaceFolder}/docker-compose.test.yml",
+                "up",
+                "hangout_app_tests"
+            ]
         },
         {
-            "label": "watch",
-            "command": "dotnet",
+            "label": "test-compose-run-dotnet-test",
+            "command": "docker",
             "type": "process",
             "args": [
-                "watch",
-                "run",
-                "${workspaceFolder}/App/App.csproj",
-                "/property:GenerateFullPaths=true",
-                "/consoleloggerparameters:NoSummary"
-            ],
-            "problemMatcher": "$msCompile"
+                "exec",
+                "-i",
+                "hangout_app_tests",
+                "dotnet",
+                "test", 
+                "--logger:trx", 
+                "/app-tests/App.Tests.dll"
+            ]
+        },
+        // {
+        //     "label": "test-compose-run-dotnet-test-background",
+        //     "command": "docker",
+        //     "type": "process",
+        //     "args": [
+        //         "exec",
+        //         "-d",
+        //         "hangout_app_tests",
+        //         "dotnet",
+        //         "test", 
+        //         "--logger:trx", 
+        //         "/app-tests/App.Tests.dll"
+        //     ]
+        // },
+        {
+            "label": "compose-up-test-background",
+            "command": "docker-compose",
+            "type": "process",
+            "args": [
+                "-f",
+                "${workspaceFolder}/docker-compose.test.yml",
+                "up",
+                "-d",
+                "hangout_app_tests"
+            ]
+        },
+        {
+            "label": "compose-down-test",
+            "command": "docker-compose",
+            "type": "process",
+            "args": [
+                "-f",
+                "${workspaceFolder}/docker-compose.test.yml",
+                "down",
+                "--remove-orphans"
+            ]
         }
     ]
 }

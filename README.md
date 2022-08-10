@@ -43,7 +43,11 @@ If you're still stuck / have questions / see a problem:
 
 From root.
 
-* `sudo docker-compose down --remove-orphans && sudo docker-compose build && sudo docker-compose up`
+* `docker-compose down --remove-orphans && docker-compose build && docker-compose up`
+
+* If using VS Code:
+    * Debug: `Launch Docker Compose + Attach`
+    * Run: Use Task: `launch-compose`
 
 If all goes smoothly, you should be able to access each service at:
 
