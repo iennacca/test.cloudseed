@@ -22,7 +22,7 @@ services:
       POSTGRES_USER: cloudseed_database_user
   cloudseed_web:
     build: 
-      context: ./Web2
+      context: ./Web
       dockerfile: ./dev.Dockerfile
     container_name: cloudseed_web
     ports:
@@ -32,6 +32,6 @@ services:
       # env vars set via dotfiles
       UNUSED_VARIABLE: UNUSED
     volumes:
-      - ./Web2:/usr/src/app
+      - ./Web:/usr/src/app
       - /usr/src/app/node_modules
       - /usr/src/app/.next
