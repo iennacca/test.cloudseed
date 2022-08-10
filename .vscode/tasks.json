@@ -107,7 +107,7 @@
                 "${workspaceFolder}/docker-compose.test.yml",
                 "up",
                 "-d",
-                "hangout_db_test"
+                "cloudseed_db_test"
             ]
         },
         {
@@ -118,7 +118,7 @@
                 "-f",
                 "${workspaceFolder}/docker-compose.test.yml",
                 "build",
-                "hangout_app_tests"
+                "cloudseed_app_tests"
             ]
         },
         {
@@ -129,7 +129,7 @@
                 "-f",
                 "${workspaceFolder}/docker-compose.test.yml",
                 "up",
-                "hangout_app_tests"
+                "cloudseed_app_tests"
             ]
         },
         {
@@ -139,7 +139,7 @@
             "args": [
                 "exec",
                 "-i",
-                "hangout_app_tests",
+                "cloudseed_app_tests",
                 "dotnet",
                 "test", 
                 "--logger:trx", 
@@ -169,7 +169,7 @@
                 "${workspaceFolder}/docker-compose.test.yml",
                 "up",
                 "-d",
-                "hangout_app_tests"
+                "cloudseed_app_tests"
             ]
         },
         {

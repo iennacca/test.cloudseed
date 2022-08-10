@@ -9,7 +9,9 @@
 
   <ItemGroup>
     <Compile Include="Configuration.fs" />
+    <Compile Include="ServiceTree.fs" />
     <Compile Include="Tests.fs" />
+    <Compile Include="Source/Sentinels/TestCreateSentinelCommand.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
 
