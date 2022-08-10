@@ -1,25 +1,17 @@
 version: "3"
 services:
   cloudseed_app_env:
-    build: ./App2
+    build: ./App
     container_name: cloudseed_app
     depends_on:
       - cloudseed_development_database
     ports:
       - 5001:80
     environment:
-      ACCESS_TOKEN_COOKIE_NAME: CLOUDSEED_ACCESS_TOKEN
-      DATABASE_HOST: cloudseed_development_database
-      DATABASE_NAME: cloudseed
-      DATABASE_PASSWORD: development_password
-      DATABASE_USER: cloudseed_database_user
-      EMAIL_FROM_ADDRESS: iamanemail
-      JWT_SIGNING_KEY: "CHANGEMEiamasuperlongkeytosatisfythevlongrequirementsforthis123"
-      POSTMARK_API_KEY: IAMAKEY
-      STRIPE_API_KEY: IAMAKEY
-      STRIPE_WEBHOOK_SECRET: iamakey
-      WEB_BASE_URL: http://localhost:5000
+      # Environment Variables set in App/appsettings.*.json
       ASPNETCORE_ENVIRONMENT: development
+    volumes:
+      - ~/.vsdbg:/remote_debugger:rw
   cloudseed_development_database:
     build: ./DevelopmentDatabase
     restart: always
