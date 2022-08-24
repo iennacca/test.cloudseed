@@ -4,6 +4,8 @@
     <GenerateEmbeddedFilesManifest>true</GenerateEmbeddedFilesManifest>
   </PropertyGroup>
   <ItemGroup>
+    <!-- Presentation -->
+    <Compile Include="Source/Presentation/Web/WebResponse.fs" />
     <!-- Infrastructure -->
     <Compile Include="Configuration.fs" />
     <Compile Include="Source/Infrastructure/Events.fs" />

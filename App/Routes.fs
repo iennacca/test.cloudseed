@@ -1,6 +1,7 @@
 namespace CloudSeedApp
 
 open Microsoft
+open Microsoft.AspNetCore.Http
 open System.Data.Common
 
 open Configuration
@@ -11,6 +12,7 @@ open Giraffe
 open CloudSeedApp.Persistence
 open CloudSeedApp.ServiceTree
 open GetSentinelsQuery
+open WebResponse
 
 module Routes =
 
@@ -41,6 +43,19 @@ module Routes =
             }
         }
 
+    let apiResult<'TSuccess,'TError> (fn : Async<Result<'TSuccess, 'TError>>): HttpHandler = 
+        fun(next : HttpFunc) (ctx : HttpContext) ->
+            task {
+                let! result = fn
+                return! match result with 
+                | Ok x -> json ({ 
+                        Payload = x
+                    } : WebResponse.WebResponseSuccess<'TSuccess>) next ctx
+                | Error (x : 'TError) -> json ({
+                        ErrorCode = x
+                    } : WebResponse.WebResponseError<'TError>) next ctx
+            }
+
     let routes (configuration : AppConfiguration) (connectionString : string) : HttpFunc -> AspNetCore.Http.HttpContext -> HttpFuncResult =
         let serviceTree = buildServiceTree configuration connectionString
 
@@ -52,7 +67,9 @@ module Routes =
                             route "/ping"   >=> text "pong"
                             route "/sentinels" >=> 
                                 warbler (fun _ -> 
-                                    getSentinelsQueryHttpHandler serviceTree.SentinelServiceTree)
+                                    apiResult (
+                                        sendGetSentinelsQueryAsync serviceTree.SentinelServiceTree { count = 10 }
+                                    ))
                         ]
                 ]
             )

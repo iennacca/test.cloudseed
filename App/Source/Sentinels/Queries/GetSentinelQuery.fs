@@ -23,10 +23,3 @@ module GetSentinelQuery =
                 | Some x -> Ok x 
                 | None -> Error GetSentinelQueryErrors.NoSentinelFound
         } 
-
-    let getSentinelQueryHttpHandler (sentinelServiceTree : SentinelServiceTree) = 
-        fun(next : HttpFunc) (ctx : HttpContext) -> 
-            task {
-                let sentinelResult = (sendGetSentinelQueryAsync sentinelServiceTree { id = "iamasentinelid" })
-                return! json sentinelResult next ctx
-            }
