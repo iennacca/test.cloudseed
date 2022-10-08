@@ -1,0 +1,62 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <GenerateEmbeddedFilesManifest>true</GenerateEmbeddedFilesManifest>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- Presentation -->
+    <Compile Include="Source/Presentation/Web/WebResponse.fs" />
+
+    <!-- Infrastructure -->
+    <Compile Include="Configuration.fs" />
+    <Compile Include="Source/Infrastructure/Events.fs" />
+    <Compile Include="Source/Infrastructure/Persistence.fs" />
+    <Compile Include="Source/Infrastructure/Caching/SimpleTimedMemoryCache.fs" />
+    <Compile Include="Source/Infrastructure/Queueing/BatchWriter.fs" />
+
+    <!-- InfraDomain: Counter -->
+    <Compile Include="Source/Counter/Domain/CounterEvents.fs" />
+    <Compile Include="Source/Counter/Domain/CounterHourly.fs" />
+    <Compile Include="Source/Counter/Domain/CounterServiceTree.fs" />
+    <Compile Include="Source/Counter/Infrastructure/CounterTimeUtils.fs" />
+    <Compile Include="Source/Counter/Persistence/CounterDataRepository.fs" />
+    <Compile Include="Source/Counter/Persistence/IncrementCounterBatchWriter.fs" />
+    <Compile Include="Source/Counter/App/Commands/IncrementCounterCommand.fs" />
+    <Compile Include="Source/Counter/App/Queries/GetCounterTotalQuery.fs" />
+
+    <!-- Domains -->
+    
+    <!-- Domain: PushTheButton -->
+    <Compile Include="Source/PushTheButton/Domain/ButtonCounterHourly.fs" />
+    <Compile Include="Source/PushTheButton/Domain/PushTheButtonEvents.fs" />
+    <Compile Include="Source/PushTheButton/Domain/PushTheButtonServiceTree.fs" />
+    <Compile Include="Source/PushTheButton/Commands/PushTheButtonCommand.fs" />
+    <Compile Include="Source/PushTheButton/Queries/GetButtonPushesTotalQuery.fs" />
+
+    <!-- Domain: Sentinels -->
+    <Compile Include="Source/Sentinels/Domain/Sentinel.fs" />
+    <Compile Include="Source/Sentinels/Domain/SentinelEvents.fs" />
+    <Compile Include="Source/Sentinels/Domain/SentinelServiceTree.fs" />
+    <Compile Include="Source/Sentinels/Persistence/SentinelDataRepository.fs" />
+    <Compile Include="Source/Sentinels/Commands/CreateSentinelCommand.fs" />
+    <Compile Include="Source/Sentinels/Queries/GetSentinelQuery.fs" />
+    <Compile Include="Source/Sentinels/Queries/GetSentinelsQuery.fs" />
+    <!-- Startup -->
+    <Compile Include="ServiceTree.fs" />
+    <Compile Include="Routes.fs" />
+    <Compile Include="Program.fs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="dapper.fsharp" Version="3.3.0" />
+    <PackageReference Include="DbUp" Version="4.6.0" />
+    <PackageReference Include="dbup-postgresql" Version="4.6.3" />
+    <PackageReference Include="Giraffe" Version="6.0.0" />
+    <PackageReference Include="newtonsoft.json" Version="13.0.1" />
+    <PackageReference Include="npgsql" Version="6.0.5" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="**/DatabaseUpgradeScripts/DBUP*.sql" />
+    <!-- <EmbeddedResource Include="**/appsettings*.json" /> -->
+    <EmbeddedResource Include="appsettings*.json" />
+  </ItemGroup>
+</Project>

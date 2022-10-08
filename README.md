@@ -1,24 +1,24 @@
 # Overview
 
-CloudSeed was built to provide a solid project base for your application. As such, it's best to download a clean copy and start working from there.
+CloudSeed was built to provide a simple, solid project base for your application.
 
 CloudSeed is split into three primary services:
 
-* App - The Core App logic, API, and where DB integration happens
-    * Built with .NET Core
-    * App.Tests - Tests for App
-* Web - A thin Web app - built to be heavily modified / replaced.
-    * Built with NextJS
+* Web (Frontend) - A thin Web app - built to be heavily modified / replaced.
+    * Built with Svelte / Sveltekit
+* App (Backend) - The Core App logic, API, and where DB integration happens
+    * Built with FSharp + .NET Core
+* App.Tests - Tests for App
 * DB - A local, dockerized DB you can spin up to simulate real-world deployment + integration use cases.
     * Postgres
 
-The App is the core and the rest serve as useful but optional additions.
+The App is the core and the rest serve as useful but optional and replaceable additions.
 
 ## Getting Support
 
 We will continually be adding and updating documentation on the site at https://cloudseed.xyz
-
-If you're still stuck / have questions / see a problem:
+ 
+If you're still stuck / have questions / see a problem: 
 
 * Create an Issue on the GitHub
 * Contact me at hamy+cloudseed@hamy.xyz
@@ -41,9 +41,9 @@ If you're still stuck / have questions / see a problem:
 
 ## Building and running locally
 
-From root.
-
-* `sudo docker-compose down --remove-orphans && sudo docker-compose build && sudo docker-compose up`
+* If using VS Code, Run Tasks:
+    * Debug: `Launch Docker Compose + Attach`
+    * Run: Use Task: `launch-compose`
 
 If all goes smoothly, you should be able to access each service at:
 
@@ -51,6 +51,10 @@ If all goes smoothly, you should be able to access each service at:
 * App - `localhost:5001`
     * Verify via: `localhost:5001/sentinels`
 * DB - `localhost:5002`
+
+Manual commands
+
+* From root: `docker-compose down --remove-orphans && docker-compose build && docker-compose up`
 
 Additional commands
 
@@ -60,171 +64,29 @@ Additional commands
 
 ## Testing
 
-From root.
+* If using VS Code, Run Tasks:
+    * `launch-test-compose`
 
-* `sudo docker-compose -f docker-compose.test.yml down --remove-orphans && sudo docker-compose -f docker-compose.test.yml up cloudseed_db_test` (this needs to stay running)
+Manual commands:
 
-In new terminal:
+* From root: `sudo docker-compose -f docker-compose.test.yml down --remove-orphans && sudo docker-compose -f docker-compose.test.yml up cloudseed_db_test` (this needs to stay running)
 
-* `sudo docker-compose -f docker-compose.test.yml build cloudseed_app_tests && sudo docker-compose -f docker-compose.test.yml up cloudseed_app_tests`
+* From root, in new terminal: `sudo docker-compose -f docker-compose.test.yml build cloudseed_app_tests && sudo docker-compose -f docker-compose.test.yml up cloudseed_app_tests`
 
-## Updating the data model
+## Data Model
 
 We believe in simple, accurate data model upgrades. This means having a single source of truth and always acting on it.
 
-All database model upgrades happen via DBUp. DBUp will upgrade the database at app startup, running scripts in alphabetical order found in `./App/Source/Data/DatabaseUpgradeScripts`. This is the _single source of truth_ for upgrades. It can run any sql compatible with Postgres.
+By default, all database model upgrades happen via DBUp. 
 
-Thus to update the data model, add a new script in `./App/Source/Data/DatabaseUpgradeScripts` with naming convention: `DatabaseUpgradeScriptXXXXXX-DESCRIPTION.sql`, like `DatabaseUpgradeScript000001-MyUpdate.sql`. This will then get applied to the database on deploy.
+All database model upgrades happen via DBUp. DBUp will upgrade the database at app startup, running scripts in alphabetical order found in `./App/Source/Infrastructures/DatabaseUpgradeScripts`. 
 
-### EF Migrations
+This is the _single source of truth_ for upgrades. It can run any sql compatible with Postgres by default - though you can always change to a different sql engine if you prefer.
 
-EF Migrations is a useful tool for generating code first updates to a data model (i.e. update the model in code then generate the sql to make that work for the db). However this has a lot of drawbacks:
+## Data Access
 
-* Lack of transparency in what updates are applied
-* Lack of control over what changes are applied in what order
-* Complexity due to creation of c# migrations which are then turned into sql migrations
-* Lack of robust sql migration upgrade code
+For the sake of simplicity, we've opted to make data access as transparent as possible. By default, CloudSeed utilizes Dapper for data persistence which allows you to write simple, performant object <> sql functions.
 
-However we do acknowledge the usefulness of this tool for making code first changes and scaffolding sql to reflect it. So we've made it possible to do that here.
+You can find examples of this in action in the `Sentinels` and `Counter` domains.
 
-Here is how you can levereage EF Migrations to scaffold sql updates to the database which you can then review and commit to `DatabaseUpgradeScripts` (See Updating the data model) to deploy these changes to the database.
-
-First make sure you have `dotnet` and `dotnet-ef` installed locally. Docs: https://docs.microsoft.com/en-us/ef/core/cli/dotnet
-
-* Install: `dotnet tool install --global dotnet-ef`
-* Update: `dotnet tool update --global dotnet-ef`
-
-Next we'll create the migration scripts for our data model.
-
-* Build and Run App and DB locally (see Building and running locally). Keep this running through the next processes.
-    * `dotnet ef` requires a db to create snapshots and running the whole project further enables us to make sure we're on a working commit (we don't want to build a broken data model!)
-    * Tip: Make sure that `./App/appsettings.Development.json` has the correct environment variables for connecting to the database (should match that in `./docker-compose.yml`). This will allow `dotnet ef` to talk to the database to create its snapshots
-* In a new terminal, navigate to `./App`
-* Take a snapshot of the original model (i.e. before data changes were made). This will likely mean stopping the app, checking out the commit before changes were made, and restarting the app.
-    * Run `dotnet ef migrations add InitialTemp --output-dir ./MigrationsTemp`
-    * This will take a snapshot of the existing db model and place that in `./App/MigrationsTemp`
-* Save the new model (i.e. after data changes were made). This will likely mean stopping the app, checking out the commit where data model changes were made, and restarting the app.
-* Take a snapshot of the new model
-    * Run `dotnet ef migrations add NewTemp --output-dir ./MigrationsTemp`
-* Examine the output migration and see if it makes sense. Make changes where necessary.
-    * In particular, if check to see if any tables or columns are being deleted or updated, this could lead to data loss (typically dotnet ef will output warnings if this is happening)
-* Create a sql script that captures these changes
-    * Run `dotnet ef migrations script INITIALMIGRATION NEWMIGRATION --output ./MigrationsTemp/TOMIGRATE.sql` - where INITIALMIGRATION and NEWMIGRATION are the names of the migrations located in `./App/MigrationsTemp`
-        * For example they might look like `dotnet ef migrations script 20220101_InitialTemp 20210101_NewTemp --output ./MigrationsTemp/TOMIGRATE.sql`
-* Examine the output `TOMIGRATE.sql` to make sure it makes sense
-    * Note: 
-        * Remove the transaction code from the sql statement - we run DBUp in transactions anyway
-        * Remove the `__EFMigrationsHistory` lines as we are not using EF upgrade mechanisms to handle data migrations.
-* Once reviewed, move it to the `DatabaseUpgradeScripts` folder (and update the name) to deploy it to the database (see Updating the data model for further instructions)
-    * Test it works
-        * Run the app
-        * Run the tests
-* Delete the `./App/MigrationsTemp` folder so it doesn't clog up the workspace
-* Repeat for any other data changes you want to use EF Migrations for
-
-## Running dotnet commands in container
-
-* sudo docker run --rm -it -v $(pwd):/app/ -w /app mcr.microsoft.com/dotnet/sdk:5.0.203-alpine3.13 dotnet YOUR_COMMANDS_HERE
-
-* Create a new webApp - new webApp -o myWebApp --no-https
-* create a webApi - new webapi --no-https
-* install a package like Newtonsoft - add package Newtonsoft.Json
-* Add reference to project - dotnet add PATH_TO_CSPROJ reference PATH_TO_REFERENCE_CSPROJ
-
-# Deployment
-
-## Deploying to Google Cloud Run
-
-1. Create a GCloud project
-2. Create SQL instance
-    * CloudSQL -> Choose PostgreSQL
-        * Enable whatever you need to enable perm-wise (should be a prompt)
-3. Setup repo for Cloud Build
-    * Enable Cloud Build
-        * `Cloud Build -> Settings`
-        * If a new project, will see a popup saying you need to enable the api
-            * Click `View API`
-            * Click `Enable`
-        * It may take a few seconds for Permissions to load everywhere.
-    * Set permissions - `Cloud Build -> Settings`
-        * Cloud Run Admin: Enabled
-        * Service Accounts: Enabled
-    * Create a Cloud Build service account
-        * `IAM & Admin > Service Accounts`
-            * Create Service Account
-            * Name: `GitLab CI Cloud Build`
-            * Role: `Cloud Build Service Agent`, `Cloud Build Editor`
-        * Go to the list of Service Accounts
-            * Click on the new service account you created
-            * Go to `Keys` tab
-            * Add Key > Create Key > JSON
-            * Hold onto key! Will call `GitLab CI Cloud Build Key`
-    * Configure GitLab CI Repo
-        * Go to your project's GitLab Repo
-        * Set key via `Settings > CI/CD > Variables`
-            * GCP_PROJECT_ID: ID of project
-            * GCP_CLOUD_BUILD_SERVICE_KEY: `GitLab CI Cloud Build Key` (JSON file from earlier)
-    * Configure environment variables
-        * You must configure environment variables, otherwise the build will fail
-        * Cloud SQL Connections
-            * `Cloud Run > Server > Edit & Deploy New Revision > Connections`
-                * Add Connection
-                * Enable APIs
-                * Select DB
-                * Deploy
-        * App
-            * Fill in all environment variables used in docker-compose in CloudRun
-        * Web
-            * Fill in all environment variables used in docker-compose in CloudRun
-4. Create Cloud Run instance
-    * Push to your GitLab CI Repo
-        * This will run the builders in GitLab and then push to Cloud Build which will create your Cloud Run services
-        * Monitor your GitLab build by going to GitLab repo -> CI / CD -> Pipelines
-            * If there are failures, look at the logs to see why
-        * Monitor Cloud Run success by going to Cloud Run and looking for your services.
-            * If everything was successful you should have:
-                * web
-                * app
-
-# Troubleshooting
-
-* ERROR: for X: Cannot create container for service x: conflict. The container name x is already in use by container "Y"
-    * Use docker rm Y
-
-## Intellisense
-
-C#
-
-* If intellisense is failing, go to App / App.Tests folder and run `dotnet build`. This will download all necessary dlls and dependencies directly folder so intellisense can pick it up.
-
-## Windows
-
-* Docker error: FileNotFoundError when running docker-compose
-    * Click the running apps, find Docker icon
-        * right click -> Quit Docker Desktop
-        * Wait til stops
-        * Run Docker Desktop
-        * Wait til Started
-        * If in WSL, using VS Code, and in integrated terminal, sometimes just need to restart VS Code editor
-        * If still happening, may need to restart computer
-
-## Stripe Development
-
-### Stripe webhooks locally
-
-* `docker run --rm --entrypoint /bin/sh -it stripe/stripe-cli:latest`
-* `stripe listen --forward-to host.docker.internal:5001/webhooks/stripe`
-* Follow login instructions from CLI, then rerun ^
-
-## Query Database
-
-* Create connection to db `docker run -it --rm postgres psql -h host.docker.internal -p 5002 -U cloudseed_business_database_user -W`
-* Input the password at prompt
-* Now query
-
-Useful queries:
-
-* List all databases `\l`
-* Connect to database `\c DATABASENAME`
-* List all tables in database `\dt`
-* Run a query: Write query followed by a semicolon `select * from users;`
+These are intentionally lightweight so it's easy to replace with another ORM if you wish.
