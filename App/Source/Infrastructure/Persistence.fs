@@ -9,6 +9,8 @@ open Npgsql
 
 module Persistence =
 
+    type IDBIOAsync<'a> = (DbConnection -> Async<'a>) -> Async<'a>
+
     let getDatabaseConnectionString databaseHost databaseName databaseUser databasePassword  = 
         let builder = (new NpgsqlConnectionStringBuilder())
         builder.Host <- databaseHost
@@ -20,8 +22,22 @@ module Persistence =
 
         builder.ToString()
 
+    let getDbConnectionAsync connectionString : Async<DbConnection> = 
+        async {
+            let dbConnection = new NpgsqlConnection(connectionString)
+            return dbConnection
+        }
+
     let getDatabaseConnection connectionString : DbConnection = 
         new NpgsqlConnection(connectionString)
+
+    let withDbIoAsync connectionString (callbackAsync : DbConnection -> Async<'a>) = 
+        async {
+            use dbConnection = new NpgsqlConnection(connectionString)
+            do! dbConnection.OpenAsync() |> Async.AwaitTask
+
+            return! callbackAsync dbConnection
+        }
 
     let upgradeDatabase connectionString =
         printfn "DB Connection String: %A" connectionString

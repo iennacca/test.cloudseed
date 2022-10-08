@@ -17,9 +17,6 @@
                 class="font-semibold text-xl tracking-tight hover:text-hamred">
                 { homeLink.name }
             </a>
-            <div class="px-2 ml-6 border border-black">
-                Early Access
-            </div>
         </div>
         <div class='flex items-right'>
             {#each allLinks as link}

@@ -14,11 +14,15 @@ module Configuration =
         IDONOTEXIST: string 
     }
 
-    let fetchConfiguration =
-        // hamytodo: Probably want to have different Dev vs production settings
+    let fetchConfiguration (environment_name : string) =
+        let targetConfigurationFile = (
+            if environment_name.ToLower() = "development" 
+                then "appsettings.Development.json" 
+                else "appsettings.json")
+
         let configurationRoot = ((ConfigurationBuilder())
                             .SetBasePath(Directory.GetCurrentDirectory())
-                            .AddJsonFile("appsettings.json", false)
+                            .AddJsonFile(targetConfigurationFile, false)
                             .Build())
 
         let root = configurationRoot.Get<AppConfiguration>()

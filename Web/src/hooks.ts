@@ -7,8 +7,8 @@ export const handle: Handle = async ({ event, resolve }) => {
 	const cookies = cookie.parse(event.request.headers.get('cookie') || '');
 	let session = await getSessionFromCookiesAsync(cookies)
 
-	console.log('hamy - session')
-	console.log(session)
+	// console.log('hamy - session')
+	// console.log(session)
 
 	event.locals.session = session
 

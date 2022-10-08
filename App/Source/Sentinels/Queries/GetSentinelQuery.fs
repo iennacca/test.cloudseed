@@ -16,7 +16,7 @@ module GetSentinelQuery =
 
     let sendGetSentinelQueryAsync (serviceTree : SentinelServiceTree) (event : SentinelEvents.GetSentinelQuery) : Async<Result<Sentinel, SentinelEvents.GetSentinelQueryErrors>> = 
         async {
-            let dbConnection = serviceTree.WorkflowIOs.DbConnection()
+            use! dbConnection = serviceTree.DbConnectionAsync()
             let! sentinels = (getSentinelByIdIOAsync dbConnection event.id)            
 
             return match sentinels with

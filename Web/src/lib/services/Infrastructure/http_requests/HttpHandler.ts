@@ -93,7 +93,7 @@ export async function HandleHttpJsonResponseAsync<T>(httpResponsePromise: Promis
 
         let typedBody = body as T
         return {
-            responseBody: typedBody
+            payload: typedBody
         } as THttpResponse<T>
     }
 }

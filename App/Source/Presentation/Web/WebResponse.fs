@@ -7,9 +7,7 @@ module WebResponse =
         // ErrorDescription: string
     }
 
-    type WebResponseSuccess<'TSuccess> = {
-        Payload: 'TSuccess 
-    }
+    type WebResponseSuccess<'TSuccess> = 'TSuccess
 
     type WebResponse<'TSuccess, 'TError> = 
         | WebError of WebResponseError<'TError>

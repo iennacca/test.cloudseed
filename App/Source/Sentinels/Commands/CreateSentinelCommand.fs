@@ -8,6 +8,8 @@ open Sentinel
 open System
 open System.Threading.Tasks
 
+open Persistence
+
 open SentinelDataRepository
 open SentinelEvents
 open SentinelServiceTree
@@ -17,7 +19,7 @@ module CreateSentinelCommand =
 
     let sendCreateSentinelCommandAsync (serviceTree : SentinelServiceTree) : Async<Result<Sentinel, SentinelEvents.CreateSentinelCommandErrors>> = 
         async {
-            let dbConnection = serviceTree.WorkflowIOs.DbConnection()
+            use! dbConnection = serviceTree.DbConnectionAsync()
 
             let newSentinel : Sentinel = {
                 id = Guid.NewGuid().ToString()
@@ -26,7 +28,7 @@ module CreateSentinelCommand =
                 }
             }
 
-            let! sentinels = createSentinelIOAsync dbConnection newSentinel           
+            let! sentinels = createSentinelIOAsync dbConnection newSentinel
 
             return match sentinels with
                 | Some x -> Ok x 
@@ -36,6 +38,6 @@ module CreateSentinelCommand =
     let createSentinelCommandHttpHandler (sentinelServiceTree : SentinelServiceTree) = 
         fun(next : HttpFunc) (ctx : HttpContext) -> 
             task {
-                let sentinelResult = (sendCreateSentinelCommandAsync sentinelServiceTree)
-                return! json sentinelResult next ctx
+                let! sentinelResult = (sendCreateSentinelCommandAsync sentinelServiceTree)
+                return sentinelResult
             }

@@ -2,15 +2,15 @@
 </script>
 
 <script lang="ts">
-	import HeroSection from "$lib/UI/marketing/HeroSection.svelte";
+	import PushTheButton from "$lib/PushTheButton/PushTheButton.svelte";
 </script>
 
 <svelte:head>
-	<title>Home</title>
+	<title>SMASH_THE_BUTTON</title>
 </svelte:head>
 
 <section>
-	<HeroSection />
+	<PushTheButton />
 </section>
 
 <style>

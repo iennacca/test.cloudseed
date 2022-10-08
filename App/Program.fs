@@ -34,7 +34,12 @@ let configureApp (app : IApplicationBuilder) =
 
     Dapper.FSharp.OptionTypes.register()
 
-    let configuration = fetchConfiguration
+    let environment_name = 
+        match (Environment
+        .GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")) with 
+        | null -> ""
+        | x -> x.ToLower()
+    let configuration = fetchConfiguration environment_name
     let connectionString = (getDatabaseConnectionString 
         configuration.DATABASE_HOST
         configuration.DATABASE_NAME

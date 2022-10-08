@@ -6,10 +6,10 @@ services:
     depends_on:
       - cloudseed_development_database
     ports:
-      - 5001:80
+      - 5001:8080
     environment:
       # Environment Variables set in App/appsettings.*.json
-      ASPNETCORE_ENVIRONMENT: development
+      ASPNETCORE_ENVIRONMENT: Development
     volumes:
       - ~/.vsdbg:/remote_debugger:rw
   cloudseed_development_database:

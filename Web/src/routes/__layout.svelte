@@ -14,45 +14,47 @@
 	import type { NavigationLink } from '$lib/UI/header/layouts/Navigation.svelte'
 	import '../app.css';
 	import type { AuthenticationSession } from '$lib/services/Infrastructure/authentication/AuthenticationSession'
+	import { tryGetGoogleAnalyticsId } from '../lib/services/Infrastructure/Configuration'
 
 	export let session: App.Session
 
 	const getNavigationLinks = (session: AuthenticationSession | null) => {
 		let navigationLinks: NavigationLink[] = [
 		{
-			name: 'Documentation',
-			href: '/documentation'
-		},
-		{
-			name: 'Pricing',
-			href: '/pricing'
+			name: 'About',
+			href: 'https://labs.hamy.xyz/projects/smashthebutton'
 		}
 		]
 
-		if(session !== null) {
-			navigationLinks.push(
-				{
-				name: "Account",
-				href: "/account"
-				}
-			)
-		} else {
-			navigationLinks.push(
-				{
-				name: "Login",
-				href: "/login"
-				}
-			)
-		}
-
 		return navigationLinks
 	}
+
+	try {
+		if(typeof window !== 'undefined' 
+        && window) {
+			const googleAnalyticsId = tryGetGoogleAnalyticsId()
+			// @ts-ignore
+			window.dataLayer = window.dataLayer || [];
+			// @ts-ignore
+			function gtag(){window.dataLayer.push(arguments);}
+			// @ts-ignore
+			gtag('js', new Date());
+			// @ts-ignore
+			gtag('config', googleAnalyticsId);
+		}
+	} catch(error) {
+		console.error("Failed to initialize Analytics")
+	}
 </script>
+
+<svelte:head>
+	<script async src="https://www.googletagmanager.com/gtag/js"></script>
+</svelte:head>
 
 <Navigation 
 	homeLink={
 		{
-			name: "CloudSeed",
+			name: "SMASH_THE_BUTTON",
 			href: "/"
 		}
 	}

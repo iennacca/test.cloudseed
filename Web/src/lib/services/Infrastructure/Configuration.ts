@@ -32,7 +32,7 @@ export const getDeployEnvironment = (): DeployEnvironments => {
     const deployEnvironment = parseDeployEnvironmentFromString(
         envString
     )
-    console.log(deployEnvironment)
+    // console.log(deployEnvironment)
     return deployEnvironment
 }
 
@@ -42,7 +42,7 @@ export const getWebBaseUrl = (): string => {
         import.meta.env.VITE_PUBLIC_WEB_BASE_URL,
         getDeployEnvironment() === DeployEnvironments.Development
     )
-    console.log('hamy, webbaseurl: ' + webBaseUrl)
+    // console.log('hamy, webbaseurl: ' + webBaseUrl)
 
     return webBaseUrl.length > 0
         ? webBaseUrl

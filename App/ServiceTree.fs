@@ -5,6 +5,8 @@ open System.Data.Common
 open Dapper.FSharp
 
 open Configuration
+open CounterServiceTree
+open PushTheButtonServiceTree
 open SentinelServiceTree
 
 module ServiceTree = 
@@ -12,17 +14,10 @@ module ServiceTree =
     type Settings = {
         AppConfiguration: Configuration.AppConfiguration
     }
-    type Workflows = {
-        NotAWorkflow: int
-    }
-    type WorkflowIOs = {
-        getDbConnection: unit -> DbConnection
-        NotAnIO: int
-    }
 
     type ServiceTree = {
         Settings: Settings 
+        CounterServiceTree: CounterServiceTree
         SentinelServiceTree: SentinelServiceTree
-        Workflows: Workflows 
-        WorkflowIOs: WorkflowIOs
+        PushTheButtonServiceTree: PushTheButtonServiceTree
     }

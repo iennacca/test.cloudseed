@@ -2,12 +2,10 @@ namespace CloudSeedApp
 
 open System.Data.Common
 
+open Persistence
+open Sentinel
+
 module SentinelServiceTree = 
-
-    type SentinelWorkflowIOs = {
-        DbConnection: unit -> DbConnection
-    }
-
     type SentinelServiceTree = {
-        WorkflowIOs : SentinelWorkflowIOs
+        DbConnectionAsync: unit -> Async<DbConnection>
     }

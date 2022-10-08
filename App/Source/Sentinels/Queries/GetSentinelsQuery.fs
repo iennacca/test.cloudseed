@@ -17,7 +17,7 @@ module GetSentinelsQuery =
 
     let sendGetSentinelsQueryAsync (serviceTree : SentinelServiceTree) (event : GetSentinelsQuery) : Async<Result<seq<Sentinel>, SentinelEvents.GetSentinelsQueryErrors>> = 
         async {
-            let dbConnection = serviceTree.WorkflowIOs.DbConnection()
+            use! dbConnection = serviceTree.DbConnectionAsync()
 
             let! createdSentinel = sendCreateSentinelCommandAsync serviceTree
             let! sentinels = (getSentinelsIOAsync dbConnection event.count)            
@@ -27,7 +27,7 @@ module GetSentinelsQuery =
 
     let getSentinelsQueryHttpHandler (sentinelServiceTree : SentinelServiceTree) = 
         fun(next : HttpFunc) (ctx : HttpContext) -> 
-            task {
-                let sentinelResult = (sendGetSentinelsQueryAsync sentinelServiceTree { count = 10 })
-                return! json sentinelResult next ctx
+            async {
+                let! sentinelResult = (sendGetSentinelsQueryAsync sentinelServiceTree { count = 10 })
+                return sentinelResult
             }
