@@ -4,11 +4,11 @@ CloudSeed was built to provide a simple, solid project base for your application
 
 CloudSeed is split into three primary services:
 
-* App - The Core App logic, API, and where DB integration happens
+* Web (Frontent) - A thin Web app - built to be heavily modified / replaced.
+    * Built with Svelte / Sveltekit
+* App (Backend) - The Core App logic, API, and where DB integration happens
     * Built with FSharp + .NET Core
 * App.Tests - Tests for App
-* Web - A thin Web app - built to be heavily modified / replaced.
-    * Built with Svelte / Sveltekit
 * DB - A local, dockerized DB you can spin up to simulate real-world deployment + integration use cases.
     * Postgres
 
