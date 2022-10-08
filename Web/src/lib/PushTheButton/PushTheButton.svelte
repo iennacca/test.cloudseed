@@ -1,5 +1,4 @@
 <script lang="ts">
-	import Button from "../UI/elements/Button.svelte"
     import { onMount } from "svelte/internal";
 	import { sendButtonPushesCommandAsync } from "./Commands/SendButtonPushesCommand";
     import { getRemotePushesQueryAsync } from "./Queries/FetchRemotePushesQuery"
@@ -54,13 +53,10 @@
     }
 
     let fetchRemotePushes = () => {
-        // callAPI here
         getRemotePushesQueryAsync()
         .then(totalRemotePushes => {
-            // console.log("totalRemotePushes payload: ", totalRemotePushes)
             remoteCount = totalRemotePushes.payload ?? 0
         })
-        // remoteCount = remoteCount + 1
     }
     onMount(async () => fetchRemotePushes())
 
