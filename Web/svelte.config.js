@@ -18,22 +18,22 @@ const config = {
 	kit: {
 		adapter: adapter(),
 
-		// Override http methods in the Todo forms
-		methodOverride: {
-			allowed: ['PATCH', 'DELETE']
-		},
-		vite: {
-			server: {
-				watch: {
-					usePolling: true
-				},
-				hmr: {
-					// protocol: 'ws',
-					// host: 'localhost',
-					port: 5000
-				}
-			}
-		}
+		// // Override http methods in the Todo forms
+		// methodOverride: {
+		// 	allowed: ['PATCH', 'DELETE']
+		// },
+		// vite: {
+		// 	server: {
+		// 		watch: {
+		// 			usePolling: true
+		// 		},
+		// 		hmr: {
+		// 			// protocol: 'ws',
+		// 			// host: 'localhost',
+		// 			port: 5000
+		// 		}
+		// 	}
+		// }
 	}
 };
 
