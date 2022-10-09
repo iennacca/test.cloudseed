@@ -14,8 +14,6 @@
 	import type { NavigationLink } from '$lib/UI/header/layouts/Navigation.svelte'
 	import '../app.css';
 
-	export let session: App.Session
-
 	const getNavigationLinks = () => {
 		let navigationLinks: NavigationLink[] = [
 		{
