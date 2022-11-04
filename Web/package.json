@@ -4,7 +4,7 @@
   "scripts": {
     "dev": "vite dev --host 0.0.0.0",
     "build": "vite build",
-    "start": "vite preview",
+    "start": "export PORT=8080 && export NODE_ENV=production && node ./build",
     "package": "svelte-kit package",
     "preview": "svelte-kit preview",
     "check": "svelte-check --tsconfig ./tsconfig.json",
