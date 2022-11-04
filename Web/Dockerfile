@@ -1,4 +1,4 @@
-FROM node:16
+FROM node:lts-slim as build
 
 WORKDIR /app
 
@@ -9,7 +9,11 @@ COPY . .
 RUN npm install
 RUN npm run build
 
+FROM node:lts-slim as run
+
+WORKDIR /app
+COPY --from=build /app .
+COPY . .
+
 EXPOSE 8080
-# RUN npm run dev
-# ENTRYPOINT [ "node", "./index.js" ]
 ENTRYPOINT [ "npm", "run", "start" ]
