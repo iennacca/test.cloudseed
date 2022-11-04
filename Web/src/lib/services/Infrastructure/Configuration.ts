@@ -1,4 +1,3 @@
-// import type { DeployEnvironments } from '$lib/services/Infrastructure/environment/DeployEnvironments' 
 import { DeployEnvironments, parseDeployEnvironmentFromString } from '$lib/services/Infrastructure/environment/DeployEnvironments'
 
 export const getAccessTokenCookieName = (): string => {
@@ -8,8 +7,6 @@ export const getAccessTokenCookieName = (): string => {
         getDeployEnvironment() === DeployEnvironments.Development
     )
 
-    // ham: We set defaults like this because in prod build it takes in vars at build time
-    // this means we may not have access to env vars in container in CloudRun - set sane defaults
     return tokenName.length > 0
         ? tokenName
         : 'CLOUDSEED_BUSINESS_ACCESS_TOKEN'
@@ -24,7 +21,7 @@ export const getAppBaseUrl = (): string => {
 
     return appBaseUrl.length > 0
         ? appBaseUrl
-        : 'https://app.cloudseed.xyz'
+        : 'PLACEHOLDER_ENV_VARIABLE'
 }
 
 export const getDeployEnvironment = (): DeployEnvironments => {
@@ -32,7 +29,6 @@ export const getDeployEnvironment = (): DeployEnvironments => {
     const deployEnvironment = parseDeployEnvironmentFromString(
         envString
     )
-    // console.log(deployEnvironment)
     return deployEnvironment
 }
 
@@ -42,11 +38,10 @@ export const getWebBaseUrl = (): string => {
         import.meta.env.VITE_PUBLIC_WEB_BASE_URL,
         getDeployEnvironment() === DeployEnvironments.Development
     )
-    // console.log('hamy, webbaseurl: ' + webBaseUrl)
 
     return webBaseUrl.length > 0
         ? webBaseUrl
-        : 'https://cloudseed.xyz'
+        : 'PLACEHOLDER_ENV_VARIABLE'
 }
 
 export const tryGetGoogleAnalyticsId = (): string => {
@@ -58,7 +53,7 @@ export const tryGetGoogleAnalyticsId = (): string => {
 
     return googleId.length > 0
         ? googleId
-        : 'G-YVPKETS06B'
+        : 'PLACEHOLDER_ENV_VARIABLE'
 }
 
 const assertIsString = (key: string, value: any, shouldThrow: boolean = true): string => {
