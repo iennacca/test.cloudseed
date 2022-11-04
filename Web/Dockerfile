@@ -13,7 +13,6 @@ FROM node:lts-slim as run
 
 WORKDIR /app
 COPY --from=build /app .
-COPY . .
 
 EXPOSE 8080
 ENTRYPOINT [ "npm", "run", "start" ]
