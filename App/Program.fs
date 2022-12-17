@@ -66,6 +66,7 @@ let main _ =
         .ConfigureWebHostDefaults(
             fun webHostBuilder ->
                 webHostBuilder
+                    .UseKestrel(fun c -> c.AddServerHeader <- false)
                     .Configure(configureApp)
                     .ConfigureServices(configureServices)
                     |> ignore)
