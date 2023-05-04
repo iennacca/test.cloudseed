@@ -20,10 +20,11 @@ module Configuration =
                 then "appsettings.Development.json" 
                 else "appsettings.json")
 
-        let configurationRoot = ((ConfigurationBuilder())
-                            .SetBasePath(Directory.GetCurrentDirectory())
-                            .AddJsonFile(targetConfigurationFile, false)
-                            .Build())
+        let configurationRoot = (
+            (ConfigurationBuilder())
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile(targetConfigurationFile, false)
+                .Build())
 
         let root = configurationRoot.Get<AppConfiguration>()
         root
