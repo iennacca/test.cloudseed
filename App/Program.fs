@@ -6,14 +6,12 @@ open Microsoft
 open Microsoft.AspNetCore.Builder
 open Microsoft.AspNetCore.Cors
 open Microsoft.AspNetCore.Hosting
-open Microsoft.Extensions.Configuration
 open Microsoft.Extensions.Hosting
 open Microsoft.Extensions.DependencyInjection
 
 open Dapper.FSharp
 open Giraffe
 open Giraffe.EndpointRouting
-open Npgsql
 
 open CloudSeedApp.Configuration
 open CloudSeedApp.Persistence
