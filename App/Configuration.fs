@@ -26,5 +26,4 @@ module Configuration =
                             .Build())
 
         let root = configurationRoot.Get<AppConfiguration>()
-        printfn "Root: %A" root
         root
