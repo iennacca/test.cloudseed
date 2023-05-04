@@ -12,26 +12,14 @@ open Microsoft.Extensions.DependencyInjection
 
 open Dapper.FSharp
 open Giraffe
+open Giraffe.EndpointRouting
 open Npgsql
 
 open CloudSeedApp.Configuration
 open CloudSeedApp.Persistence
 open CloudSeedApp.Routes
 
-let webApp (configuration : AppConfiguration) (connectionString: string) : HttpFunc -> AspNetCore.Http.HttpContext -> HttpFuncResult =
-    routes configuration connectionString
-
 let configureApp (app : IApplicationBuilder) =
-    app.UseCors(
-        Action<_>
-            (fun (b: Infrastructure.CorsPolicyBuilder) ->
-                // Put real allowed origins in here
-                b.AllowAnyHeader() |> ignore
-                b.AllowAnyMethod() |> ignore
-                b.AllowAnyOrigin() |> ignore)
-    )
-    |> ignore
-
     Dapper.FSharp.OptionTypes.register()
 
     let environment_name = 
@@ -40,19 +28,35 @@ let configureApp (app : IApplicationBuilder) =
         | null -> ""
         | x -> x.ToLower()
     let configuration = fetchConfiguration environment_name
-    let connectionString = (getDatabaseConnectionString 
-        configuration.DATABASE_HOST
-        configuration.DATABASE_NAME
-        configuration.DATABASE_USER
-        configuration.DATABASE_PASSWORD)
+    let connectionString = (
+        getDatabaseConnectionString 
+            configuration.DATABASE_HOST
+            configuration.DATABASE_NAME
+            configuration.DATABASE_USER
+            configuration.DATABASE_PASSWORD)
 
     printfn "ConnectionString: %A: " connectionString
 
     upgradeDatabase connectionString
         |> ignore
 
-    // Add Giraffe to the ASP.NET Core pipeline
-    app.UseGiraffe (webApp configuration connectionString)
+    let endpointsList = routes configuration connectionString
+
+    app
+        .UseRouting()
+        .UseCors(
+            Action<_>
+                (fun (b: Infrastructure.CorsPolicyBuilder) ->
+                    // Put real allowed origins in here
+                    b.AllowAnyHeader() |> ignore
+                    b.AllowAnyMethod() |> ignore
+                    b.AllowAnyOrigin() |> ignore)
+        )
+        .UseEndpoints(
+            fun e ->
+                e.MapGiraffeEndpoints(endpointsList)
+        )
+    |> ignore
 
 let configureServices (services : IServiceCollection) =
     services.AddCors() |> ignore

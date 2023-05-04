@@ -9,6 +9,7 @@ open Configuration
 open Events
 open GetSentinelQuery
 open Giraffe
+open Giraffe.EndpointRouting
 
 open CloudSeedApp.Persistence
 open CloudSeedApp.ServiceTree
@@ -69,46 +70,35 @@ module Routes =
                     } : WebResponse.WebResponseError<'TError>) next ctx
             }
 
-    let routes (configuration : AppConfiguration) (connectionString : string) : HttpFunc -> AspNetCore.Http.HttpContext -> HttpFuncResult =
+    let routes (configuration : AppConfiguration) (connectionString : string) =
         let serviceTree = buildServiceTree configuration connectionString
 
-        choose [
-            subRoute "" (
-                choose[
-                    GET >=> 
-                        choose [
-                            route "/" >=> 
-                                warbler (fun _ -> 
-                                    apiResult (
-                                        (getSentinelsQueryHttpHandler serviceTree.SentinelServiceTree)
-                                    ))
-                            route "/ping"   >=> text "pong"
-                            route "/sentinels" >=> 
-                                warbler (fun _ -> 
-                                    apiResult (
-                                        (getSentinelsQueryHttpHandler serviceTree.SentinelServiceTree)
-                                    ))
-                        ]
+        [
+            subRoute "" [
+                GET [
+                    route "/" ( 
+                        apiResult (
+                            (getSentinelsQueryHttpHandler serviceTree.SentinelServiceTree)
+                        ))
+                    route "/ping" (text "pong")
+                    route "/sentinels" ( 
+                        apiResult (
+                            (getSentinelsQueryHttpHandler serviceTree.SentinelServiceTree)
+                        ))
                 ]
-            )
-            subRoute "/push-the-button" (
-                choose[
-                    GET >=> 
-                        choose [
-                            route "/push/totals" >=> 
-                                warbler (fun _ -> 
-                                    apiResult (
-                                        (createGetButtonPushesTotalQueryHttpHandler serviceTree.PushTheButtonServiceTree)
-                                    ))
-                        ]
-                    POST >=> 
-                        choose [
-                            route "/push" >=> 
-                                warbler (fun _ -> 
-                                    apiResult (
-                                        (createPushTheButtonCommandHttpHandler serviceTree.PushTheButtonServiceTree)
-                                    ))
-                        ]
+            ]
+            subRoute "/push-the-button" [
+                GET [
+                    route "/push/totals" ( 
+                        apiResult (
+                            (createGetButtonPushesTotalQueryHttpHandler serviceTree.PushTheButtonServiceTree)
+                        ))
                 ]
-            )
-            route "/"       >=> htmlFile "/pages/index.html" ]
+                POST [
+                    route "/push" ( 
+                        apiResult (
+                            (createPushTheButtonCommandHttpHandler serviceTree.PushTheButtonServiceTree)
+                        ))
+                ]
+            ]
+        ]
