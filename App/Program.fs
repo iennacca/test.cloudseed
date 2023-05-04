@@ -33,8 +33,6 @@ let configureApp (app : IApplicationBuilder) =
             configuration.DATABASE_USER
             configuration.DATABASE_PASSWORD)
 
-    printfn "ConnectionString: %A: " connectionString
-
     upgradeDatabase connectionString
         |> ignore
 
