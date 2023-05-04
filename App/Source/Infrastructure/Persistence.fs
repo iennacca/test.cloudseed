@@ -40,7 +40,6 @@ module Persistence =
         }
 
     let upgradeDatabase connectionString =
-        printfn "DB Connection String: %A" connectionString
         try 
             EnsureDatabase.For.PostgresqlDatabase(connectionString)
         with 
@@ -62,6 +61,6 @@ module Persistence =
 
         let result = upgrader.PerformUpgrade()
         match result.Successful with 
-        | false -> failwith "Failed to upgrade database"
+        | false -> failwith "Failed to upgrade database!"
         | true -> printfn "Database Upgrade Success!"
 
