@@ -96,7 +96,7 @@
             unsavedLocalCount += 1
             updateButtonText()}}
         type="button"
-        class="text-white bg-black py-2 px-4 uppercase font-bold"
+        class="btn"
         style="touch-action:manipulation;">
         {buttonText}
     </button>
