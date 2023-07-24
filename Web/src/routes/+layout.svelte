@@ -1,14 +1,3 @@
-<script context="module">
-    export const load = async({ session }) => {
-
-        return {
-            props: {
-                session: session
-            }
-        }
-    }
-</script>
-
 <script lang="ts">
 	import Navigation from '$lib/UI/header/layouts/Navigation.svelte';
 	import type { NavigationLink } from '$lib/UI/header/layouts/Navigation.svelte'
