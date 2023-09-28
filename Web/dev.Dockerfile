@@ -1,9 +1,8 @@
-FROM node:lts-slim
+FROM node:20-slim
 
 WORKDIR /app
 
 COPY package*.json ./
-RUN rm -rf node_modules
 RUN npm install
 COPY . .
 

@@ -1,2 +1,2 @@
-FROM postgres:13.1
+FROM postgres:15-alpine
 EXPOSE 5432
