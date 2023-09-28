@@ -20,6 +20,8 @@ open CloudSeedApp.Routes
 let configureApp (app : IApplicationBuilder) =
     Dapper.FSharp.OptionTypes.register()
 
+    printfn "hamytodo: cachebreak - 20230928t1346"
+
     let environment_name = 
         match (Environment
         .GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")) with 
