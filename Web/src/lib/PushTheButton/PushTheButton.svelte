@@ -3,8 +3,6 @@
 	import { sendButtonPushesCommandAsync } from "./Commands/SendButtonPushesCommand";
     import { getRemotePushesQueryAsync } from "./Queries/FetchRemotePushesQuery"
 
-    console.log("hamytodo: cachebreak - 20230928t1346")
-
     let remoteCount = 0
     let localCount = 0
     let unsavedLocalCount = 0
