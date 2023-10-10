@@ -16,7 +16,11 @@ module GetCounterTotalQuery =
 
     let getCounterTotalAsync dbConnection (event : GetCounterTotalQueryEvent) = readCounterTotalIOAsync dbConnection event.CounterId event.StartTimestampUtcEpochMs (Some event.EndTimestampUtcEpochMs)
 
-    let sendGetCounterTotalQueryAsync (serviceTree : CounterServiceTree) (event : GetCounterTotalQueryEvent) : Async<Result<int64, string>> = 
+    let sendGetCounterTotalQueryAsync 
+        (serviceTree : CounterServiceTree) 
+        (event : GetCounterTotalQueryEvent) 
+        : Async<Result<int64, string>> 
+        = 
         async {
             use! dbConnection = serviceTree.DbConnectionAsync()
 

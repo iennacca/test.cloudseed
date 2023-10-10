@@ -31,10 +31,15 @@ module Routes =
         | SentinelEvent of SentinelEvents.SentinelEvent
         | FakeEvent of int
 
-    let buildServiceTree (appConfiguration: AppConfiguration) (connectionString : string) : ServiceTree = 
+    let buildServiceTree 
+        (appConfiguration: AppConfiguration) 
+        (connectionString : string) 
+        : ServiceTree 
+        = 
         let dbConnectionAsync = fun() -> getDbConnectionAsync connectionString
 
-        let incrementCounterBatchWriter = new IncrementCounterBatchWriter(100, dbConnectionAsync)
+        let incrementCounterBatchWriter = 
+            new IncrementCounterBatchWriter(100, dbConnectionAsync)
         
         let counterServiceTree = {
             CounterReadCache = (createTimeBasedCacheAsync 2000 100)
@@ -59,7 +64,10 @@ module Routes =
             }
         }
 
-    let apiResult<'TSuccess,'TError> (handler : HttpFunc -> HttpContext -> Async<Result<'TSuccess, 'TError>>): HttpHandler = 
+    let apiResult<'TSuccess,'TError> 
+        (handler : HttpFunc -> HttpContext -> Async<Result<'TSuccess, 'TError>>)
+        : HttpHandler 
+        = 
         fun(next : HttpFunc) (ctx : HttpContext) ->
             task {
                 let! result = handler next ctx

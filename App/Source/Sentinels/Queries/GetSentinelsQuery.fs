@@ -15,11 +15,16 @@ open SentinelServiceTree
 
 module GetSentinelsQuery =
 
-    let sendGetSentinelsQueryAsync (serviceTree : SentinelServiceTree) (event : GetSentinelsQuery) : Async<Result<seq<Sentinel>, SentinelEvents.GetSentinelsQueryErrors>> = 
+    let sendGetSentinelsQueryAsync 
+        (serviceTree : SentinelServiceTree) 
+        (event : GetSentinelsQuery) 
+        : Async<Result<seq<Sentinel>, SentinelEvents.GetSentinelsQueryErrors>> 
+        = 
         async {
             use! dbConnection = serviceTree.DbConnectionAsync()
 
-            let! createdSentinel = sendCreateSentinelCommandAsync serviceTree
+            let! createdSentinel = 
+                sendCreateSentinelCommandAsync serviceTree
             let! sentinels = (getSentinelsIOAsync dbConnection event.count)            
 
             return Ok sentinels
@@ -28,6 +33,7 @@ module GetSentinelsQuery =
     let getSentinelsQueryHttpHandler (sentinelServiceTree : SentinelServiceTree) = 
         fun(next : HttpFunc) (ctx : HttpContext) -> 
             async {
-                let! sentinelResult = (sendGetSentinelsQueryAsync sentinelServiceTree { count = 10 })
+                let! sentinelResult = 
+                    sendGetSentinelsQueryAsync sentinelServiceTree { count = 10 }
                 return sentinelResult
             }

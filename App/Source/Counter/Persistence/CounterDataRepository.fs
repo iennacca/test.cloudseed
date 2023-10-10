@@ -7,8 +7,6 @@ open FSharp.Control
 open System.Text.Json
 
 open Dapper
-// open Dapper.FSharp
-// open Dapper.FSharp.PostgreSQL
 
 open CloudSeedApp.CounterHourly
 open CloudSeedApp.CounterEvents
@@ -24,8 +22,6 @@ module CounterDataRepository =
 
     let tableName = "time_based_counters"
 
-    // let counterTable = table'<CounterPersist> "time_based_counters"
-
     let mapCounterPersistToDomain (persist : CounterPersist) : CounterHourly = 
         {
             CounterId = persist.counter_id
@@ -33,7 +29,13 @@ module CounterDataRepository =
             TotalHits = persist.hits
         }
 
-    let readCounterTotalIOAsync (dbConnection : DbConnection) (counterId : string) (startTimestampUtcEpochMsInclusive : int64) (endTimestampUtcEpochMsInclusive : int64 option) : Async<CounterHourly option> =
+    let readCounterTotalIOAsync 
+        (dbConnection : DbConnection) 
+        (counterId : string) 
+        (startTimestampUtcEpochMsInclusive : int64) 
+        (endTimestampUtcEpochMsInclusive : int64 option) 
+        : Async<CounterHourly option> 
+        =
         async {
             let effectiveEndTimestamp = 
                 match endTimestampUtcEpochMsInclusive with 
@@ -56,15 +58,22 @@ module CounterDataRepository =
             // ham - we're not doing a very good job of modeling the domain
             // if we're shoe-horning this stuff in here. REally should
             // use something like counterHitsOverRange or something like that
-            let! results = (dbConnection.QueryAsync<CounterPersist>(sql, (queryRecord))
-                |> Async.AwaitTask)
+            let! results = 
+                dbConnection.QueryAsync<CounterPersist>(sql, (queryRecord))
+                |> Async.AwaitTask
 
             return results
                 |> Seq.map mapCounterPersistToDomain
                 |> Seq.tryHead 
         }
 
-    let incrementCounterIOAsync (dbConnection : DbConnection) (counterId : string) (timestampEpochMs : int64) (incrementHits : int64) : Async<unit> =
+    let incrementCounterIOAsync 
+        (dbConnection : DbConnection) 
+        (counterId : string) 
+        (timestampEpochMs : int64) 
+        (incrementHits : int64) 
+        : Async<unit> 
+        =
         async {
             let sql = "INSERT INTO time_based_counters
                 (counter_id, timestamp_utc_epoch_ms, hits)

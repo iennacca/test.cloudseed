@@ -13,7 +13,11 @@ open PushTheButtonEvents
 
 module GetButtonPushesTotalQuery =
 
-    let getButtonPushesTotalQueryAsync (serviceTree : PushTheButtonServiceTree) (event : GetButtonPushesTotalQueryEvent) : GetButtonPushesTotalQueryResult = 
+    let getButtonPushesTotalQueryAsync 
+        (serviceTree : PushTheButtonServiceTree) 
+        (event : GetButtonPushesTotalQueryEvent) 
+        : GetButtonPushesTotalQueryResult 
+        = 
         async {
             // ham - maybe validation first for railroading...
 
@@ -31,13 +35,9 @@ module GetButtonPushesTotalQuery =
             return buttonPusshesTotalResult
         } 
 
-    // [<CLIMutable>]
-    // type GetButtonPushesTotalQueryHttpPayload =
-    //     {
-    //     }
-
-
-    let createGetButtonPushesTotalQueryHttpHandler (serviceTree : PushTheButtonServiceTree) = 
+    let createGetButtonPushesTotalQueryHttpHandler 
+        (serviceTree : PushTheButtonServiceTree) 
+        = 
         fun(next : HttpFunc) (ctx : HttpContext) -> 
             async {
 
@@ -46,6 +46,7 @@ module GetButtonPushesTotalQuery =
                     EndTimeUtcEpochMs = serviceTree.UtcNowEpochMs()
                 }
 
-                let! result = (getButtonPushesTotalQueryAsync serviceTree event)
+                let! result = 
+                    getButtonPushesTotalQueryAsync serviceTree event
                 return result
             }

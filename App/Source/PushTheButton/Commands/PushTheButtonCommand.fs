@@ -13,7 +13,10 @@ open PushTheButtonEvents
 
 module PushTheButtonCommand =
 
-    let asyncBind (next : 'a -> Async<Result<'b, 'c>>) (asyncResult : Async<Result<'a, 'c>>) = 
+    let asyncBind 
+        (next : 'a -> Async<Result<'b, 'c>>) 
+        (asyncResult : Async<Result<'a, 'c>>) 
+        = 
         async {
             let! result = asyncResult
             match result with
@@ -21,9 +24,13 @@ module PushTheButtonCommand =
             | Ok x -> return! next x
         }
 
-    let (>>=) asyncResult next = asyncBind next asyncResult
+    let (>>=) asyncResult next = 
+        asyncBind next asyncResult
 
-    let _validatePushTheButtonCommandAsync (event : PushTheButtonCommand) : Async<Result<PushTheButtonCommand, PushTheButtonCommandErrors>> =
+    let _validatePushTheButtonCommandAsync 
+        (event : PushTheButtonCommand) 
+        : Async<Result<PushTheButtonCommand, PushTheButtonCommandErrors>> 
+        =
         async {
             match event with 
                 | e when e.Hits < 0 ->
@@ -33,7 +40,11 @@ module PushTheButtonCommand =
                 | _ -> return Ok event
         }
 
-    let _pushTheButtonCommandAsync (serviceTree : PushTheButtonServiceTree) (event : PushTheButtonCommand) : Async<Result<bool, PushTheButtonCommandErrors>> =
+    let _pushTheButtonCommandAsync 
+        (serviceTree : PushTheButtonServiceTree) 
+        (event : PushTheButtonCommand) 
+        : Async<Result<bool, PushTheButtonCommandErrors>> 
+        =
          async {
             let! _ = serviceTree.SendIncrementCounterCommand {
                 CounterId = PUSH_THE_BUTTON_COUNTER_NAME
@@ -44,7 +55,11 @@ module PushTheButtonCommand =
             return Ok true
         }
 
-    let sendPushTheButtonCommandAsync (serviceTree : PushTheButtonServiceTree) (event : PushTheButtonCommand) : Async<Result<bool, PushTheButtonCommandErrors>> = 
+    let sendPushTheButtonCommandAsync 
+        (serviceTree : PushTheButtonServiceTree) 
+        (event : PushTheButtonCommand) 
+        : Async<Result<bool, PushTheButtonCommandErrors>> 
+        = 
         async {
             let! result = (
                 (_validatePushTheButtonCommandAsync event)
@@ -61,20 +76,15 @@ module PushTheButtonCommand =
             Hits : int
         }
 
-    let createPushTheButtonCommandHttpHandler (serviceTree : PushTheButtonServiceTree) = 
+    let createPushTheButtonCommandHttpHandler 
+        (serviceTree : PushTheButtonServiceTree) 
+        = 
         fun(next : HttpFunc) (ctx : HttpContext) -> 
             async {
-                let! rawHttpPayload = (ctx.BindJsonAsync<RawPushTheButtonCommandHttpPayload>()
+                let! rawHttpPayload = (
+                    ctx.BindJsonAsync<RawPushTheButtonCommandHttpPayload>()
                     |> Async.AwaitTask)
 
-                // let effectivePayloadHits = 
-                //     match rawHttpPayload with 
-                //     | Some r ->
-                //         match r.Hits with 
-                //         | Some h ->
-                //             h
-                //         | _ -> 1
-                //     | _ -> 1
                 let effectivePayloadHits = 
                     match box rawHttpPayload with 
                     | null -> 1
@@ -88,6 +98,7 @@ module PushTheButtonCommand =
                     Hits = int64 effectivePayloadHits
                 }
 
-                let! result = (sendPushTheButtonCommandAsync serviceTree event)
+                let! result = 
+                    sendPushTheButtonCommandAsync serviceTree event
                 return result
             }

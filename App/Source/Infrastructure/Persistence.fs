@@ -11,7 +11,12 @@ module Persistence =
 
     type IDBIOAsync<'a> = (DbConnection -> Async<'a>) -> Async<'a>
 
-    let getDatabaseConnectionString databaseHost databaseName databaseUser databasePassword  = 
+    let getDatabaseConnectionString 
+        databaseHost 
+        databaseName 
+        databaseUser 
+        databasePassword 
+        = 
         let builder = (new NpgsqlConnectionStringBuilder())
         builder.Host <- databaseHost
         builder.Database <- databaseName

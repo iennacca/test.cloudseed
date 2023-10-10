@@ -14,7 +14,11 @@ open SentinelServiceTree
 
 module GetSentinelQuery =
 
-    let sendGetSentinelQueryAsync (serviceTree : SentinelServiceTree) (event : SentinelEvents.GetSentinelQuery) : Async<Result<Sentinel, SentinelEvents.GetSentinelQueryErrors>> = 
+    let sendGetSentinelQueryAsync 
+        (serviceTree : SentinelServiceTree) 
+        (event : SentinelEvents.GetSentinelQuery) 
+        : Async<Result<Sentinel, SentinelEvents.GetSentinelQueryErrors>> 
+        = 
         async {
             use! dbConnection = serviceTree.DbConnectionAsync()
             let! sentinels = (getSentinelByIdIOAsync dbConnection event.id)            

@@ -8,12 +8,18 @@ open CounterEvents
 
 module IncrementCounterBatchWriter = 
     
-    type IncrementCounterBatchWriter(batchSize: int, createDbConnectionAsync : unit -> Async<DbConnection>) = 
+    type IncrementCounterBatchWriter(
+        batchSize: int, 
+        createDbConnectionAsync : unit -> Async<DbConnection>) 
+        = 
 
         let batchSize = batchSize
         let createDbConnectionAsync = createDbConnectionAsync
 
-        let batchIncrementEvents (incrementEventList : IncrementCounterCommandEvent list) : IncrementCounterCommandEvent list = 
+        let batchIncrementEvents 
+            (incrementEventList : IncrementCounterCommandEvent list) 
+            : IncrementCounterCommandEvent list 
+            = 
             let counterToEventsLookup = 
                 incrementEventList
                 |> Seq.groupBy (fun e -> e.CounterId)

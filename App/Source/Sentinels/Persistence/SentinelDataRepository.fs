@@ -34,7 +34,11 @@ module SentinelDataRepository =
             data = JsonSerializer.Deserialize<SentinelData> sentinelPersist.data
         }
 
-    let createSentinelIOAsync (dbConnection : DbConnection) (sentinel : Sentinel) : Async<Sentinel option> =
+    let createSentinelIOAsync 
+        (dbConnection : DbConnection) 
+        (sentinel : Sentinel) 
+        : Async<Sentinel option> 
+        =
         async {
             let sentinelPersist = mapSentinelToSentinelPersist sentinel
 
@@ -49,7 +53,11 @@ module SentinelDataRepository =
             return Some sentinel
         }
 
-    let getSentinelByIdIOAsync (dbConnection : DbConnection) (id : string) : Async<Sentinel option> =  
+    let getSentinelByIdIOAsync 
+        (dbConnection : DbConnection) 
+        (id : string) 
+        : Async<Sentinel option> 
+        =  
         async {
             let! sentinelPersists = 
                 select {
@@ -64,7 +72,11 @@ module SentinelDataRepository =
                 |> Seq.tryHead
         }
 
-    let getSentinelsIOAsync (dbConnection : DbConnection) (takeCount : int) : Async<seq<Sentinel>> =  
+    let getSentinelsIOAsync 
+        (dbConnection : DbConnection) 
+        (takeCount : int) 
+        : Async<seq<Sentinel>> 
+        =  
         async {
             let sqlParameters = {|
                 take = takeCount
@@ -73,7 +85,8 @@ module SentinelDataRepository =
                 FROM sentinels
                 ORDER BY id
                 LIMIT @take"
-            let! sentinelPersists = (dbConnection.QueryAsync<SentinelPersist>(sql, sqlParameters)
+            let! sentinelPersists = (
+                dbConnection.QueryAsync<SentinelPersist>(sql, sqlParameters)
                 |> Async.AwaitTask)
 
 

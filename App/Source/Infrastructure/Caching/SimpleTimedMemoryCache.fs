@@ -11,10 +11,18 @@ module SimpleTimedMemoryCache =
         Item: 'Item
         ExpiryTimeEpochMs: int64 }
 
-    let createTimeBasedCacheAsync<'TCache> (timeWindowMs : int64) (totalItemCapacity : int): (int64 -> string -> Async<'TCache> -> Async<'TCache>) = 
-        let cachedItemLookup =  new ConcurrentDictionary<string, TimeCachedItem<'TCache>>()
+    let createTimeBasedCacheAsync<'TCache> 
+        (timeWindowMs : int64) 
+        (totalItemCapacity : int)
+        : (int64 -> string -> Async<'TCache> -> Async<'TCache>) 
+        = 
+        let cachedItemLookup = new ConcurrentDictionary<string, TimeCachedItem<'TCache>>()
 
-        let trashCollect (cachedItemLookup : ConcurrentDictionary<string, TimeCachedItem<'TCache>>) (countToRemove : int) : unit = 
+        let trashCollect 
+            (cachedItemLookup : ConcurrentDictionary<string, TimeCachedItem<'TCache>>) 
+            (countToRemove : int) 
+            : unit 
+            = 
             match cachedItemLookup.Count with
             | count when count > totalItemCapacity ->
                 cachedItemLookup.Keys 
@@ -25,7 +33,12 @@ module SimpleTimedMemoryCache =
                 |> ignore
             | _ -> ()
 
-        let fetchFromCacheOrFetcherAsync (currentTimeMs : int64) cacheId (fetcherFnAsync : Async<'TCache>) : Async<'TCache> =
+        let fetchFromCacheOrFetcherAsync 
+            (currentTimeMs : int64) 
+            cacheId 
+            (fetcherFnAsync : Async<'TCache>) 
+            : Async<'TCache> 
+            =
             async {
                 let existingCachedItem = 
                     match cachedItemLookup.TryGetValue(cacheId) with 

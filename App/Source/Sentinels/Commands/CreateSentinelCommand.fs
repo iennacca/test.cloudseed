@@ -17,7 +17,10 @@ open SentinelServiceTree
 
 module CreateSentinelCommand =
 
-    let sendCreateSentinelCommandAsync (serviceTree : SentinelServiceTree) : Async<Result<Sentinel, SentinelEvents.CreateSentinelCommandErrors>> = 
+    let sendCreateSentinelCommandAsync 
+        (serviceTree : SentinelServiceTree) 
+        : Async<Result<Sentinel, SentinelEvents.CreateSentinelCommandErrors>> 
+        = 
         async {
             use! dbConnection = serviceTree.DbConnectionAsync()
 
@@ -35,9 +38,12 @@ module CreateSentinelCommand =
                 | None -> Error SentinelEvents.CreateSentinelCommandErrors.CouldNotCreateSentinel
         } 
 
-    let createSentinelCommandHttpHandler (sentinelServiceTree : SentinelServiceTree) = 
+    let createSentinelCommandHttpHandler 
+        (sentinelServiceTree : SentinelServiceTree) 
+        = 
         fun(next : HttpFunc) (ctx : HttpContext) -> 
             task {
-                let! sentinelResult = (sendCreateSentinelCommandAsync sentinelServiceTree)
+                let! sentinelResult = 
+                    sendCreateSentinelCommandAsync sentinelServiceTree
                 return sentinelResult
             }

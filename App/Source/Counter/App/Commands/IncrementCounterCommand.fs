@@ -14,11 +14,16 @@ open CounterTimeUtils
 
 module IncrementCounterCommand =
 
-    let sendIncrementCounterCommandAsync (serviceTree : CounterServiceTree) (event : IncrementCounterCommandEvent) : Async<Result<bool, unit>> = 
+    let sendIncrementCounterCommandAsync 
+        (serviceTree : CounterServiceTree) 
+        (event : IncrementCounterCommandEvent) 
+        : Async<Result<bool, unit>> 
+        = 
         async {
             // ham - maybe validation first for railroading...
 
-            let timestampUtcEpochMsHoursGranularity = getTimestampEpochMsToHourGranularity event.TimestampUtcEpochMs
+            let timestampUtcEpochMsHoursGranularity = 
+                getTimestampEpochMsToHourGranularity event.TimestampUtcEpochMs
             serviceTree.IncrementCounterBatchWriter {event with TimestampUtcEpochMs = timestampUtcEpochMsHoursGranularity}
 
             return Ok true
