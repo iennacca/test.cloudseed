@@ -4,8 +4,9 @@ open System
 open FsUnit
 open Xunit
 
-open CloudSeedApp.CreateSentinelCommand
-open CloudSeedApp.GetSentinelQuery
+open CloudSeedApp.SentinelCommands
+open CloudSeedApp.SentinelDomain
+open CloudSeedApp.SentinelQueries
 open AppTests.ServiceTree
 
 [<Fact>]
@@ -30,3 +31,21 @@ let ``Test Create Sentinel Command`` () =
         |> Async.RunSynchronously
 
 
+[<Fact>]
+let ``Test Sentinel Query - Does Not Exist`` () =
+    let serviceTree = getServiceTree.Value
+
+    let doesNotExistId = "THIS_ID_DOES_NOT_EXIST"
+
+    let testAsync = async {
+        let! sentinelResult = sendGetSentinelQueryAsync serviceTree.SentinelServiceTree { id = doesNotExistId }
+        match sentinelResult with 
+            | Ok r -> 
+                failwith "This id should not exist!"
+            | Error e ->
+                e 
+                |> should equal GetSentinelQueryErrors.NoSentinelFound
+        
+    }
+    testAsync
+        |> Async.RunSynchronously

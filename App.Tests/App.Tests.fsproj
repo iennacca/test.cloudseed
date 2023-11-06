@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
 
     <IsPackable>false</IsPackable>
     <GenerateProgramFile>false</GenerateProgramFile>
@@ -16,14 +16,14 @@
     <Compile Include="Source/Counter/TestIncrementCounterCommand.fs" />
     <Compile Include="Source/Counter/TestGetCounterTotalQuery.fs" />
     <Compile Include="Source/PushTheButton/TestPushTheButtonCommand.fs" />
-    <Compile Include="Source/Sentinels/TestCreateSentinelCommand.fs" />
+    <Compile Include="Source/Sentinels/TestSentinelCommands.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="fsunit.xunit" Version="5.0.1" />
+    <PackageReference Include="fsunit.xunit" Version="5.4.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.11.0" />
-    <PackageReference Include="xunit" Version="2.4.1" />
+    <PackageReference Include="xunit" Version="2.5.0" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>

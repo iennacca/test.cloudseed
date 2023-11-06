@@ -8,6 +8,7 @@ open CloudSeedApp.GetCounterTotalQuery
 open CloudSeedApp.IncrementCounterCommand
 open CloudSeedApp.IncrementCounterBatchWriter
 open CloudSeedApp.Persistence
+open CloudSeedApp.SentinelPersistence
 open CloudSeedApp.ServiceTree
 open CloudSeedApp.SimpleTimedMemoryCache
 
@@ -41,7 +42,7 @@ module ServiceTree =
                 UtcNowEpochMs = fun() -> DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()
             }
             SentinelServiceTree = {
-                DbConnectionAsync = dbConnectionAsync
+                DbContext = fun () -> new SentinelDataContext(connectionString)
             }
         }
 

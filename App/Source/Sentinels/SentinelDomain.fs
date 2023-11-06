@@ -1,6 +1,18 @@
 namespace CloudSeedApp
 
-module SentinelEvents = 
+module SentinelDomain = 
+
+    [<CLIMutable>]
+    type SentinelData = {
+        name: string
+    }
+
+    // Mutable for Dapper
+    [<CLIMutable>]
+    type Sentinel = {
+        id: string
+        data: SentinelData
+    }
 
     type GetSentinelQueryErrors =
         | NoEventReceived

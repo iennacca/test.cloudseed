@@ -7,28 +7,28 @@ open System.Data.Common
 
 open Configuration
 open Events
-open GetSentinelQuery
 open Giraffe
 open Giraffe.EndpointRouting
 
 open CloudSeedApp.Persistence
 open CloudSeedApp.ServiceTree
 open CounterServiceTree
-open GetSentinelsQuery
 open GetButtonPushesTotalQuery
 open GetCounterTotalQuery
 open IncrementCounterBatchWriter
 open IncrementCounterCommand
 open Persistence
 open PushTheButtonCommand
-open Sentinel
+open SentinelDomain
+open SentinelPersistence
+open SentinelWorkflows
 open SimpleTimedMemoryCache
 open WebResponse
 
 module Routes =
 
     type AppEvent =
-        | SentinelEvent of SentinelEvents.SentinelEvent
+        | SentinelEvent of SentinelEvent
         | FakeEvent of int
 
     let buildServiceTree 
@@ -60,7 +60,7 @@ module Routes =
                 UtcNowEpochMs = fun() -> DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()
             }
             SentinelServiceTree = {
-                DbConnectionAsync = dbConnectionAsync
+                DbContext = fun () -> new SentinelDataContext(connectionString)
             }
         }
 

@@ -34,13 +34,13 @@
     <Compile Include="Source/PushTheButton/Queries/GetButtonPushesTotalQuery.fs" />
 
     <!-- Domain: Sentinels -->
-    <Compile Include="Source/Sentinels/Domain/Sentinel.fs" />
-    <Compile Include="Source/Sentinels/Domain/SentinelEvents.fs" />
-    <Compile Include="Source/Sentinels/Domain/SentinelServiceTree.fs" />
-    <Compile Include="Source/Sentinels/Persistence/SentinelDataRepository.fs" />
-    <Compile Include="Source/Sentinels/Commands/CreateSentinelCommand.fs" />
-    <Compile Include="Source/Sentinels/Queries/GetSentinelQuery.fs" />
-    <Compile Include="Source/Sentinels/Queries/GetSentinelsQuery.fs" />
+    <Compile Include="Source/Sentinels/SentinelDomain.fs" />
+    <Compile Include="Source/Sentinels/SentinelPersistence.fs" />
+    <Compile Include="Source/Sentinels/SentinelServiceTree.fs" />
+    <Compile Include="Source/Sentinels/SentinelQueries.fs" />
+    <Compile Include="Source/Sentinels/SentinelCommands.fs" />
+    <Compile Include="Source/Sentinels/SentinelWorkflows.fs" />
+    
     <!-- Startup -->
     <Compile Include="ServiceTree.fs" />
     <Compile Include="Routes.fs" />
@@ -52,7 +52,8 @@
     <PackageReference Include="dbup-postgresql" Version="4.6.3" />
     <PackageReference Include="Giraffe" Version="6.0.0" />
     <PackageReference Include="newtonsoft.json" Version="13.0.1" />
-    <PackageReference Include="npgsql" Version="6.0.5" />
+    <PackageReference Include="npgsql" Version="7.0.6" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.11" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="**/DatabaseUpgradeScripts/DBUP*.sql" />
