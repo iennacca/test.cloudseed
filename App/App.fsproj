@@ -14,25 +14,6 @@
     <Compile Include="Source/Infrastructure/Caching/SimpleTimedMemoryCache.fs" />
     <Compile Include="Source/Infrastructure/Queueing/BatchWriter.fs" />
 
-    <!-- InfraDomain: Counter -->
-    <Compile Include="Source/Counter/Domain/CounterEvents.fs" />
-    <Compile Include="Source/Counter/Domain/CounterHourly.fs" />
-    <Compile Include="Source/Counter/Domain/CounterServiceTree.fs" />
-    <Compile Include="Source/Counter/Infrastructure/CounterTimeUtils.fs" />
-    <Compile Include="Source/Counter/Persistence/CounterDataRepository.fs" />
-    <Compile Include="Source/Counter/Persistence/IncrementCounterBatchWriter.fs" />
-    <Compile Include="Source/Counter/App/Commands/IncrementCounterCommand.fs" />
-    <Compile Include="Source/Counter/App/Queries/GetCounterTotalQuery.fs" />
-
-    <!-- Domains -->
-    
-    <!-- Domain: PushTheButton -->
-    <Compile Include="Source/PushTheButton/Domain/ButtonCounterHourly.fs" />
-    <Compile Include="Source/PushTheButton/Domain/PushTheButtonEvents.fs" />
-    <Compile Include="Source/PushTheButton/Domain/PushTheButtonServiceTree.fs" />
-    <Compile Include="Source/PushTheButton/Commands/PushTheButtonCommand.fs" />
-    <Compile Include="Source/PushTheButton/Queries/GetButtonPushesTotalQuery.fs" />
-
     <!-- Domain: Sentinels -->
     <Compile Include="Source/Sentinels/SentinelDomain.fs" />
     <Compile Include="Source/Sentinels/SentinelPersistence.fs" />
@@ -40,6 +21,7 @@
     <Compile Include="Source/Sentinels/SentinelQueries.fs" />
     <Compile Include="Source/Sentinels/SentinelCommands.fs" />
     <Compile Include="Source/Sentinels/SentinelWorkflows.fs" />
+    <Compile Include="Source/Sentinels/SentinelPresentation.fs" />
     
     <!-- Startup -->
     <Compile Include="ServiceTree.fs" />
@@ -51,9 +33,11 @@
     <PackageReference Include="DbUp" Version="4.6.0" />
     <PackageReference Include="dbup-postgresql" Version="4.6.3" />
     <PackageReference Include="Giraffe" Version="6.0.0" />
+    <PackageReference Include="Giraffe.ViewEngine" Version="1.4.0" />
     <PackageReference Include="newtonsoft.json" Version="13.0.1" />
     <PackageReference Include="npgsql" Version="7.0.6" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.11" />
+    <PackageReference Include="Scriban" Version="5.9.0" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="**/DatabaseUpgradeScripts/DBUP*.sql" />

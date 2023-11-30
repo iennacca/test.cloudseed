@@ -2,7 +2,7 @@ version: "3"
 services:
   cloudseed_app_env:
     build: ./App
-    container_name: cloudseed_app
+    container_name: cloudseed
     depends_on:
       - cloudseed_development_database
     ports:
@@ -20,19 +20,3 @@ services:
     environment:
       POSTGRES_PASSWORD: development_password
       POSTGRES_USER: cloudseed_database_user
-  cloudseed_web:
-    build: 
-      context: ./Web
-      dockerfile: ./dev.Dockerfile
-    container_name: cloudseed_web
-    ports:
-      - 5000:8080
-      - 24678:24678
-    environment:
-      # env vars set via dotfiles
-      UNUSED_VARIABLE: UNUSED
-      NODE_ENV: development
-    volumes:
-      - ./Web:/usr/src/app
-      - /usr/src/app/node_modules
-      - /usr/src/app/.next

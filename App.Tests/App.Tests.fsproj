@@ -13,9 +13,6 @@
     <Compile Include="Tests.fs" />
     <Compile Include="Source/Infrastructure/TestSimpleTimedMemoryCache.fs" />
     <Compile Include="Source/Infrastructure/TestBatchWriter.fs" />
-    <Compile Include="Source/Counter/TestIncrementCounterCommand.fs" />
-    <Compile Include="Source/Counter/TestGetCounterTotalQuery.fs" />
-    <Compile Include="Source/PushTheButton/TestPushTheButtonCommand.fs" />
     <Compile Include="Source/Sentinels/TestSentinelCommands.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>

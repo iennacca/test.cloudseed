@@ -1,8 +1,0 @@
----
-title: Example Post
-date: "2022-10-09"
----
-
-# This is a Header 
-
-This is a post.

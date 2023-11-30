@@ -39,6 +39,7 @@ let configureApp (app : IApplicationBuilder) =
     let endpointsList = routes configuration connectionString
 
     app
+        .UseStaticFiles()
         .UseRouting()
         .UseCors(
             Action<_>
