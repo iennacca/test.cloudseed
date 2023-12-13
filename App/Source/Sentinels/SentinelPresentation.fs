@@ -7,7 +7,6 @@ open SentinelCommands
 open SentinelDomain
 open SentinelServiceTree
 open SentinelQueries
-open Scriban
 
 module MainPageView = 
     open Giraffe.ViewEngine
