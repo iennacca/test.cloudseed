@@ -7,7 +7,7 @@ module SentinelDomain =
         name: string
     }
 
-    // Mutable for Dapper
+    // Mutable for EF
     [<CLIMutable>]
     type Sentinel = {
         id: string

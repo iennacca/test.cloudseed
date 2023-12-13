@@ -2,8 +2,6 @@ namespace CloudSeedApp
 
 open System.Data.Common
 
-open Dapper.FSharp
-
 open Configuration
 open SentinelServiceTree
 

@@ -29,7 +29,6 @@
     <Compile Include="Program.fs" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="dapper.fsharp" Version="3.3.0" />
     <PackageReference Include="DbUp" Version="4.6.0" />
     <PackageReference Include="dbup-postgresql" Version="4.6.3" />
     <PackageReference Include="Giraffe" Version="6.0.0" />

@@ -7,9 +7,6 @@ open FSharp.Control
 open System.Text.Json
 
 open Microsoft.EntityFrameworkCore
-open Dapper
-open Dapper.FSharp
-open Dapper.FSharp.PostgreSQL
 
 open SentinelDomain
 

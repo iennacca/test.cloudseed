@@ -9,7 +9,6 @@ open Microsoft.AspNetCore.Hosting
 open Microsoft.Extensions.Hosting
 open Microsoft.Extensions.DependencyInjection
 
-open Dapper.FSharp
 open Giraffe
 open Giraffe.EndpointRouting
 
@@ -18,8 +17,6 @@ open CloudSeedApp.Persistence
 open CloudSeedApp.Routes
 
 let configureApp (app : IApplicationBuilder) =
-    Dapper.FSharp.OptionTypes.register()
-
     let environment_name = 
         match (Environment
         .GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")) with 
