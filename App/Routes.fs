@@ -68,6 +68,7 @@ module Routes =
                                 (getSentinelsQueryHttpHandler serviceTree.SentinelServiceTree)
                             ))
                         route "/ping" (text "pong")
+                        route "/html" (htmlFile "./wwwroot/pages/index.html") 
                     ]
                 ]
             ];

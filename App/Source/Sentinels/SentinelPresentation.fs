@@ -91,6 +91,9 @@ module MainPageView =
                             _rel "stylesheet";
                             _href "/css/app.css";
                         ];
+                        script [
+                            _src "https://unpkg.com/htmx.org@1.9.9";
+                        ] [];
                         title [] [ Text "Sentinels Table" ]
                     ]
                     body [] [
@@ -147,5 +150,10 @@ module SentinelEndpoints =
                         MainPageView.mainPageHttpHandler serviceTree
                     )
                 )
-            ] 
+                route "/sentinelstable" (
+                    renderView (
+                        MainPageView.mainPageHttpHandler serviceTree
+                    )
+                )
+            ]
         ]

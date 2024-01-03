@@ -3,3 +3,4 @@ obj/
 out/
 secrets.md
 linetimes-server.yaml
+.fake
