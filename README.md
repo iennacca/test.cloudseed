@@ -1,9 +1,9 @@
 
 # Overview
 
-CloudSeed was built to provide a simple, solid F# project base.
+(This is a test clone from the original CloudSeed project by [Hamilton Greene](https://github.com/HAMY-LABS))
 
-* ADDENDUM : This is a test clone from the original CloudSeed project by Hamilton Greene.
+CloudSeed was built to provide a simple, solid F# project base.
 
 CloudSeed is split into three primary services:
 
