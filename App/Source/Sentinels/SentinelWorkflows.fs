@@ -1,7 +1,11 @@
 namespace CloudSeedApp
 
-open Giraffe 
+open System
 open Microsoft.AspNetCore.Http
+open Microsoft.Extensions.Logging
+
+open Giraffe 
+
 open SentinelServiceTree
 open SentinelCommands
 open SentinelQueries
@@ -11,6 +15,9 @@ module SentinelWorkflows =
     let getSentinelsQueryHttpHandler (sentinelServiceTree : SentinelServiceTree) = 
         fun(next : HttpFunc) (ctx : HttpContext) -> 
             async {
+                let logger = ctx.GetLogger("SentinelWorkflows")
+                logger.LogInformation("Testing logging feature")
+
                 let! sentinelResult = 
                     sendGetSentinelsQueryAsync sentinelServiceTree { count = 10 }
 

@@ -150,10 +150,5 @@ module SentinelEndpoints =
                         MainPageView.mainPageHttpHandler serviceTree
                     )
                 )
-                route "/sentinelstable" (
-                    renderView (
-                        MainPageView.mainPageHttpHandler serviceTree
-                    )
-                )
             ]
         ]

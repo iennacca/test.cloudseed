@@ -7,6 +7,7 @@ open Microsoft.AspNetCore.Builder
 open Microsoft.AspNetCore.Cors
 open Microsoft.AspNetCore.Hosting
 open Microsoft.Extensions.Hosting
+open Microsoft.Extensions.Logging
 open Microsoft.Extensions.DependencyInjection
 
 open Giraffe
@@ -15,6 +16,7 @@ open Giraffe.EndpointRouting
 open CloudSeedApp.Configuration
 open CloudSeedApp.Persistence
 open CloudSeedApp.Routes
+
 
 let configureApp (app : IApplicationBuilder) =
     let environment_name = 
@@ -54,9 +56,20 @@ let configureApp (app : IApplicationBuilder) =
 
 let configureServices (services : IServiceCollection) =
     services.AddCors() |> ignore
-
     // Add Giraffe dependencies
     services.AddGiraffe() |> ignore
+
+let configureLogging (builder : ILoggingBuilder) =
+    // Set a logging filter (optional)
+    let filter (l : LogLevel) = l.Equals LogLevel.Information
+
+    // Configure the logging factory
+    builder.AddFilter(filter) // Optional filter
+           .AddConsole()      // Set up the Console logger
+           .AddDebug()        // Set up the Debug logger
+
+           // Add additional loggers if wanted...
+    |> ignore
 
 [<EntryPoint>]
 let main _ =
@@ -67,6 +80,7 @@ let main _ =
                     .UseKestrel(fun c -> c.AddServerHeader <- false)
                     .Configure(configureApp)
                     .ConfigureServices(configureServices)
+                    .ConfigureLogging(configureLogging)
                     |> ignore)
         .Build()
         .Run()

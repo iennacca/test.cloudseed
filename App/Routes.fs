@@ -2,6 +2,7 @@ namespace CloudSeedApp
 
 open Microsoft
 open Microsoft.AspNetCore.Http
+open Microsoft.Extensions.Logging
 open System
 open System.Data.Common
 
@@ -19,6 +20,7 @@ open SentinelEndpoints
 open SentinelWorkflows
 open SimpleTimedMemoryCache
 open WebResponse
+
 
 module Routes =
 
@@ -47,6 +49,10 @@ module Routes =
         = 
         fun(next : HttpFunc) (ctx : HttpContext) ->
             task {
+
+                let logger = ctx.GetLogger("Routes")
+                logger.LogInformation("Testing logging feature")
+
                 let! result = handler next ctx
                 return! 
                     match result with 
@@ -63,7 +69,7 @@ module Routes =
             [
                 subRoute "" [
                     GET [
-                        route "/" ( 
+                        route "/api" ( 
                             apiResult (
                                 (getSentinelsQueryHttpHandler serviceTree.SentinelServiceTree)
                             ))
